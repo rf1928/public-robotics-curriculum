@@ -1,0 +1,101 @@
+material:
+  - id: ros-on-dds
+    title: ROS on DDS (design article)
+    kind: read
+    tier: required
+    url: https://design.ros2.org/articles/ros_on_dds.html
+    minutes: 30
+    standing: canonical
+    standing_note: ROS 2 design article by William Woodall (Open Robotics, ROS 2 middleware lead), 2014, revised 2019.
+    why: 'Why ROS 2 is middleware on DDS and not an OS: what DDS gives (discovery, QoS, RTPS wire protocol) and what ROS adds on top. The backbone of the one-page explanation.'
+    lang: en
+  - id: kleppmann-dist-sys-models
+    title: Distributed Systems lecture notes (Martin Kleppmann, University of Cambridge, 2021/22), sections 1.1–1.2 and 2.3, pp. 2–8 and 17–21
+    kind: read
+    tier: required
+    url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf
+    minutes: 35
+    standing: canonical
+    standing_note: Martin Kleppmann (Cambridge; author of Designing Data-Intensive Applications); the Part IB course notes, widely used beyond Cambridge.
+    why: The orienting entry. What a distributed system is and why it is hard. Messages can be lost, delayed or reordered, and nodes crash. A sender cannot tell a lost message from a slow peer or a dead one. System models (fair-loss vs reliable links, crash-stop vs crash-recovery, synchronous vs partially synchronous timing) make that precise. This is the general theory under "a topic can go silent with no error", and it puts the concept in the plumbing under every layer of the stack. Section 3 (clocks) is a preview of November's time-sync.
+    lang: en
+  - id: ros2-science-robotics
+    title: 'Robot Operating System 2: Design, Architecture, and Uses In The Wild (Macenski, Foote, Gerkey, Lalancette, Woodall)'
+    kind: read
+    tier: recommended
+    url: https://arxiv.org/abs/2211.07752
+    minutes: 30
+    standing: canonical
+    standing_note: Science Robotics 2022 (open arXiv version); authors are the ROS 2 and Nav2 leads; the standard citation for ROS 2.
+    why: The architecture section (layers, DDS, QoS, executors) in the authors' words, plus field deployments; skim the uses-in-the-wild part.
+    lang: en
+  - id: fallacies-distributed-computing
+    title: Fallacies of distributed computing
+    kind: read
+    tier: recommended
+    url: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
+    minutes: 10
+    standing: canonical
+    standing_note: The classic list (Deutsch and colleagues at Sun); cited across distributed-systems teaching.
+    why: The network is reliable, latency is zero, topology doesn't change; each break-it scenario is one of these fallacies made concrete.
+    lang: en
+  - id: realtime-background
+    title: Introduction to Real-time Systems (design article)
+    kind: read
+    tier: useful
+    url: https://design.ros2.org/articles/realtime_background.html
+    minutes: 25
+    standing: canonical
+    standing_note: ROS 2 design article by Jackie Kay (Open Robotics).
+    why: Hard versus soft real time, jitter, memory allocation and priority; the "real-time" half of the concept title, which this week's labs barely touch.
+    lang: en
+  - id: realtime-demo
+    title: Understanding real-time programming
+    kind: do
+    tier: useful
+    url: https://docs.ros.org/en/lyrical/Capabilities/Motion-planning/Real-Time-Programming.html
+    minutes: 20
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+    why: Measures latency jitter with and without memory locking; makes "real time" a number on your own machine.
+    lang: en
+  - id: discovery-and-negotiation
+    title: Topological Discovery and Communication Negotiation (design article)
+    kind: read
+    tier: useful
+    url: https://design.ros2.org/articles/discovery_and_negotiation.html
+    minutes: 25
+    standing: canonical
+    standing_note: ROS 2 design article by William Woodall (Open Robotics).
+    why: The design space for discovery (centralised, distributed, static) that the field-tie step chooses from.
+    lang: en
+  - id: ros2-processing-chains
+    title: Response-Time Analysis of ROS 2 Processing Chains Under Reservation-Based Scheduling (Casini, Blaß, Lütkebohle, Brandenburg, ECRTS 2019)
+    kind: read
+    tier: interesting
+    url: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2019.6
+    minutes: 60
+    standing: well-regarded
+    standing_note: ECRTS 2019 (open access, LIPIcs); Bosch Research and MPI-SWS; the reference analysis of the ROS 2 executor's scheduling semantics.
+    why: Shows formally why the default executor is not a priority scheduler and how a chain's latency builds up; deep, for when executor behaviour starts to matter.
+    lang: en
+  - id: why-ros2
+    title: Why ROS 2? (design article)
+    kind: read
+    tier: interesting
+    url: https://design.ros2.org/articles/why_ros2.html
+    minutes: 8
+    standing: canonical
+    standing_note: ROS 2 design article by Brian Gerkey (ROS co-creator).
+    why: The ROS 1 assumptions (one robot, good network, no real time) that ROS 2 was built to drop.
+    lang: en
+  - id: dds-wikipedia
+    title: Data Distribution Service
+    kind: read
+    tier: interesting
+    url: https://en.wikipedia.org/wiki/Data_Distribution_Service
+    minutes: 10
+    standing: well-regarded
+    standing_note: Wikipedia overview of the OMG DDS standard.
+    why: DDS outside ROS (defence, air traffic, finance); context for why ROS 2 bet on it.
+    lang: en

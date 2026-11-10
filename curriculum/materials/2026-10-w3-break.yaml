@@ -1,0 +1,119 @@
+steps:
+  - step: Replay a bag without simulated time and watch timestamps and transforms disagree
+    material:
+      - id: ros2-clock-and-time
+        title: Clock and Time (ROS 2 design article)
+        kind: read
+        tier: required
+        url: https://design.ros2.org/articles/clock_and_time.html
+        minutes: 15
+        plan: first
+        standing: canonical
+        standing_note: ROS 2 design article by Tully Foote (Open Robotics).
+        why: 'ROS time follows `/clock` only on nodes with `use_sim_time` set; every other node uses wall time. Time can jump backwards on replay. The break: play without `--clock` while nodes run on wall time, and header stamps from the bag sit years in the past relative to `now()`.'
+        lang: en
+      - id: tf2-and-time
+        title: Learning about tf2 and time (C++) (Lyrical tutorial)
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Tf2/Learning-About-Tf2-And-Time-Cpp.html
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Asking tf2 for a transform at `now()` instead of at time 0 ("latest") gives "Lookup would require extrapolation into the future". Replaying a bag on wall time produces exactly that error, so this short tutorial lets you recognise it in your own logs.
+        lang: en
+      - id: replay-determinism-thread
+        title: Fast, accurate, robust replay in ROS2 (Open Robotics Discourse, 2023)
+        kind: read
+        tier: useful
+        url: https://discourse.openrobotics.org/t/fast-accurate-robust-replay-in-ros2/30406
+        minutes: 10
+        plan: further
+        standing: agent
+        standing_note: Community thread; chosen because the replies list what replay fidelity depends on (sim time via `/clock`, reply QoS, node start-up order, `/tf_static`), with pointers to Apex.AI's ROSCon talk on deterministic replay.
+        why: Sim time is necessary but not sufficient. Playback is open-loop, so a slow machine drops messages and `/tf_static` can go missing; these failures belong in the half-page note on what makes a replay trustworthy.
+        lang: en
+  - step: Raise the derivative gain on a noisy heading signal
+    material:
+      - id: douglas-pid-part3-derivative
+        title: Understanding PID Control, Part 3 - Expanding Beyond a Simple Derivative (Brian Douglas, MathWorks)
+        kind: watch
+        tier: recommended
+        url: https://www.mathworks.com/videos/understanding-pid-control-part-3-expanding-beyond-a-simple-derivative-1531120808026.html
+        minutes: 12
+        plan: when-needed
+        standing: canonical
+        standing_note: Brian Douglas's control series.
+        why: Why an ideal derivative amplifies high-frequency noise and how a low-pass filter on the D term trades that against phase lag. Watch it before you add noise, so you know what to expect.
+        lang: en
+      - id: astrom-murray-ch11-filtering
+        title: Åström & Murray, Feedback Systems (2nd ed.), §11.5 "Implementation" - Filtering the Derivative, pp. 11-19 to 11-21
+        kind: read
+        tier: recommended
+        url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-pid_24Jul2020.pdf
+        minutes: 10
+        plan: when-needed
+        standing: canonical
+        standing_note: Standard control textbook.
+        why: The filtered-derivative formula with its N parameter, then a full discrete PID with filter and anti-windup in a dozen lines. That is the reference for checking an LLM-written controller.
+        lang: en
+      - id: beauregard-derivative-kick
+        title: 'Improving the Beginner''s PID: Derivative Kick (Brett Beauregard)'
+        kind: read
+        tier: interesting
+        url: http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-derivative-kick/
+        minutes: 8
+        plan: further
+        standing: well-regarded
+        standing_note: Author of the Arduino PID library; his "Improving the Beginner's PID" series is widely recommended.
+        why: A second way the D term misbehaves, a spike on every setpoint step. The fix is to differentiate the measurement, not the error, which is what Fossen's controller does with `r - r_d`.
+        lang: en
+  - step: Saturate the rudder and watch integral windup produce the overshoot
+    material:
+      - id: douglas-pid-part2-antiwindup
+        title: Understanding PID Control, Part 2 - Expanding Beyond a Simple Integral (Brian Douglas, MathWorks)
+        kind: watch
+        tier: recommended
+        url: https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html
+        minutes: 11
+        plan: first
+        standing: canonical
+        standing_note: Brian Douglas's control series.
+        why: Windup and the two standard cures (clamping and back-calculation), animated. Watch it after producing the overshoot and before writing the explanation.
+        lang: en
+      - id: beauregard-reset-windup
+        title: 'Improving the Beginner''s PID: Reset Windup (Brett Beauregard)'
+        kind: read
+        tier: recommended
+        url: http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-reset-windup/
+        minutes: 10
+        plan: when-needed
+        standing: well-regarded
+        standing_note: Author of the Arduino PID library; widely recommended practitioner series.
+        why: The fix in code, a few lines that stop integrating at the output limit. After the break, have the LLM add the same clamp to `PIDpolePlacement` and plot before against after.
+        lang: en
+  - step: Keep every plot
+    material:
+      - id: foxglove-layouts
+        title: Layouts (Foxglove docs), "Import and export"
+        kind: do
+        tier: useful
+        url: https://docs.foxglove.dev/docs/visualization/layouts
+        minutes: 5
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Foxglove documentation.
+        why: Export the layout as JSON next to the `.mcap`; the bag plus the layout file re-creates the plot exactly, which a screenshot cannot.
+        lang: en
+      - id: matplotlib-savefig
+        title: matplotlib.pyplot.savefig
+        kind: read
+        tier: useful
+        url: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html
+        minutes: 5
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Matplotlib API reference.
+        why: The simulator plots with Matplotlib and only calls `plt.show()`. Have the LLM add `savefig` (SVG or PDF) with the gains in the filename, so the plot the criterion asks you to link is tied to its gains.
+        lang: en

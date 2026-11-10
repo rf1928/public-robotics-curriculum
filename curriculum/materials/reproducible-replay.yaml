@@ -1,0 +1,65 @@
+material:
+  - id: applied-intuition-replay-vs-resim
+    title: Applied Intuition, "Using Re-Simulation to Verify an AV Stack Against Disengagements" (2021)
+    kind: read
+    tier: required
+    url: https://www.appliedintuition.com/blog/closed-loop-log-replay
+    minutes: 8
+    plan: further
+    standing: agent
+    standing_note: Engineering blog of a leading AV simulation and log-tooling supplier (vendor content); chosen for the clearest short statement found of what replay can and cannot test, not for outside recommendation.
+    why: |-
+      The orienting entry: what replay is for and where it sits in the stack.
+      Open-loop log replay plays recorded data into the current stack. It answers "what happened" and can evaluate sensing, perception and localization against the log.
+      It cannot evaluate planning and control, because the recorded vehicle does not respond to the new commands. That needs closed-loop re-simulation.
+      This explains why this week replays a Gazebo run in Foxglove and PlotJuggler to look at it, but tunes the autopilot in a simulator. It is also the frame for November's triage from logs. Ignore the product pitch at the end.
+    lang: en
+  - id: gazebo-harmonic-ros2-integration
+    title: Use ROS 2 to interact with Gazebo (Jetty)
+    kind: do
+    tier: recommended
+    url: https://gazebosim.org/docs/jetty/ros2_integration
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: Official Gazebo Jetty documentation, Open Robotics.
+    why: The October record step starts from a Gazebo run, and a simulated clock exists in ROS only if ros_gz_bridge carries it; this is where the bridge config is explained. Overlaps the step entries `gz-launch-from-ros2` and `ros-gz-bridge-readme`; skip it if those were read.
+    lang: en
+  - id: cruise-roscon2018-determinism
+    title: Nicolò Valigi (Cruise), "Lessons learned building a self-driving car on ROS", ROSCon 2018, slides 5–7 "Simulation and determinism"
+    kind: read
+    tier: useful
+    url: https://roscon.ros.org/2018/presentations/ROSCon2018_LessonsLearnedSelfDriving.pdf
+    minutes: 5
+    plan: further
+    standing: well-regarded
+    standing_note: ROSCon talk by a Cruise engineer, reporting on a 100-car robotaxi fleet run on ROS.
+    why: |-
+      Three slides from a robotaxi fleet on where bag replay with simulated time stops being enough. On slower hardware you slow the replay or drop frames, and execution order is no longer deterministic. Cruise's fix was lock-step replay: a fixed computation graph, scheduling driven by data flow, and acknowledgements from nodes.
+      This is the "is my replay trustworthy?" question at fleet scale. Slides 11–13 are the origin of Webviz, which became Foxglove.
+    lang: en
+  - id: lutkebohle-roscon2017-determinism
+    title: Ingo Lütkebohle (Bosch Corporate Research), "Determinism in ROS – or when things break /sometimes/ and how to fix it", ROSCon 2017, slides 1–20
+    kind: read
+    tier: useful
+    url: https://roscon.ros.org/2017/presentations/ROSCon%202017%20Determinism%20in%20ROS.pdf
+    minutes: 20
+    plan: further
+    standing: well-regarded
+    standing_note: ROSCon 2017 talk (DOI 10.36288/ROSCon2017-900789), cited by the Cruise talk above as the reference on ROS determinism; Lütkebohle later co-led ROS 2 real-time/executor work.
+    why: |-
+      It defines deterministic system, execution and communication. It measures move_base reacting in 11 ms to 235 ms on the same inputs.
+      It names the root causes: wrong input timestamps, lost data, and sampling effects between asynchronous messages and periodic timers.
+      This is the vocabulary for explaining why two replays of one bag can still differ when the clock is right. The internals shown are ROS 1 (roscpp), but the patterns carry over to ROS 2 executors.
+    lang: en
+  - id: foxglove-mcap-default
+    title: MCAP as the ROS 2 default bag format (Foxglove blog)
+    kind: read
+    tier: useful
+    url: https://foxglove.dev/blog/mcap-as-the-ros2-default-bag-format
+    minutes: 8
+    plan: further
+    standing: well-regarded
+    standing_note: Foxglove, the authors of MCAP and of rosbag2_storage_mcap.
+    why: 'Why the format changed from SQLite: self-describing schemas and crash-safe chunked writes, which is what makes a field log usable months later on another machine.'
+    lang: en

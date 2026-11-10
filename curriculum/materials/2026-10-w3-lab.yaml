@@ -1,0 +1,233 @@
+steps:
+  - step: Record a Gazebo run to MCAP
+    material:
+      - id: gz-launch-from-ros2
+        title: Launch Gazebo from ROS 2 (Gazebo Jetty docs)
+        kind: do
+        tier: required
+        url: https://gazebosim.org/docs/jetty/ros2_launch_gazebo/
+        minutes: 20
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Gazebo Jetty documentation (Open Robotics / Gazebo project).
+        why: Launching Gazebo and the bridge from a ROS 2 launch file, and the one point the replay depends on, stated with the failure it causes - bridge `/clock` (`/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock`) and set use_sim_time, or nodes fall back to the system clock ("can't compare times with different time sources").
+        lang: en
+      - id: ros-gz-bridge-readme
+        title: ros_gz_bridge README (lyrical branch)
+        kind: read
+        tier: required
+        url: https://raw.githubusercontent.com/gazebosim/ros_gz/lyrical/ros_gz_bridge/README.md
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Package documentation in gazebosim/ros_gz, the official ROS 2 / Gazebo integration, Lyrical + Jetty branch.
+        why: The message-type mapping table and the `/clock` section - Gazebo must be the only `/clock` publisher, bridged one way (Gazebo to ROS); read it before letting an LLM write the bridge config.
+        lang: en
+      - id: ros2-bag-tutorial
+        title: Recording and playing back data (Lyrical tutorial)
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/Working-with-interfaces/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html
+        minutes: 20
+        plan: when-needed
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: '`ros2 bag record`, topic selection, `ros2 bag info` and play; in Lyrical the output is already a `.mcap` file (Storage id: mcap), so no plugin step is needed.'
+        lang: en
+      - id: rosbag2-readme-sim-time
+        title: rosbag2 README (lyrical branch), "Recording data" through "Replaying data"
+        kind: read
+        tier: recommended
+        url: https://raw.githubusercontent.com/ros2/rosbag2/lyrical/README.md
+        minutes: 15
+        plan: first
+        standing: canonical
+        standing_note: Maintainers' documentation of rosbag2 (ros2/rosbag2, lyrical branch).
+        why: 'The short "Simulation time" section: `ros2 bag record --use-sim-time` stamps messages with the latest `/clock`, and writes nothing until the first `/clock` arrives (otherwise the bag starts at t=0 and jumps). Also states MCAP is the default storage.'
+        lang: en
+  - step: Replay it in Foxglove and PlotJuggler
+    material:
+      - id: foxglove-local-data
+        title: Open local data (Foxglove docs)
+        kind: do
+        tier: required
+        url: https://docs.foxglove.dev/docs/connecting-to-data/local-data
+        minutes: 5
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Foxglove documentation; Foxglove created and maintains the MCAP format.
+        why: Opening the `.mcap` directly (no bridge, no ROS running); a short page.
+        lang: en
+      - id: foxglove-plot-timestamps
+        title: Plot panel (Foxglove docs), "Series" settings - Timestamp
+        kind: read
+        tier: required
+        url: https://docs.foxglove.dev/docs/visualization/panels/plot
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Foxglove documentation.
+        why: Each series can be plotted against log time (when the recorder received it), header stamp (when the sensor says it was captured) or MCAP publish time. Plotting the same signal both ways is the quickest way to see whether clocks agree, and it is the plot the break-it step needs.
+        lang: en
+      - id: plotjuggler-ros-plugins
+        title: ROS plugins for PlotJuggler (README)
+        kind: read
+        tier: required
+        url: https://raw.githubusercontent.com/PlotJuggler/plotjuggler-ros-plugins/main/README.md
+        minutes: 5
+        plan: when-needed
+        standing: canonical
+        standing_note: Davide Faconti (PlotJuggler author); official plugin repository.
+        why: 'PlotJuggler reads ROS 2 bags only through these plugins: on Lyrical only `ros-lyrical-plotjuggler` is packaged (no `ros-lyrical-plotjuggler-ros` on packages.ros.org, checked 2026-10-13), so build them from source with the README "How to compile" steps (clone plotjuggler_msgs, PlotJuggler and plotjuggler-ros-plugins into a workspace, rosdep, colcon build) and start it with `ros2 run plotjuggler plotjuggler`. The snap, which PlotJuggler''s own README recommends, works with ROS 2 only "with some limitations".'
+        lang: en
+      - id: plotjuggler-basics
+        title: 'PlotJuggler 01: the basics (slides)'
+        kind: do
+        tier: recommended
+        url: https://slides.com/davidefaconti/introduction-to-plotjuggler
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Davide Faconti, PlotJuggler author; the tutorials linked from the project README.
+        why: Drag-and-drop plotting, linked zoom, XY plots (heading against rudder is one) and saving layouts.
+        lang: en
+      - id: plotjuggler-mcap-support
+        title: PlotJuggler adds support for MCAP (Foxglove blog)
+        kind: read
+        tier: interesting
+        url: https://foxglove.dev/blog/plotjuggler-adds-support-for-mcap
+        minutes: 3
+        plan: further
+        standing: well-regarded
+        standing_note: Foxglove (MCAP maintainers) blog, Esther Weon, 2022, announcing Faconti's MCAP loader in PlotJuggler 3.6.
+        why: Why MCAP rather than the old SQLite bags. MCAP stores message schemas in the file, so a tool can decode a bag without your workspace's message packages.
+        lang: en
+  - step: Run a heading autopilot on a surface vessel model in Fossen's simulator
+    material:
+      - id: pvs-readme
+        title: Python Vehicle Simulator README
+        kind: do
+        tier: required
+        url: https://raw.githubusercontent.com/cybergalactic/PythonVehicleSimulator/master/README.md
+        minutes: 10
+        plan: when-needed
+        standing: canonical
+        standing_note: Thor I. Fossen (NTNU), the simulator's author; companion to his Handbook and the MSS toolbox.
+        why: Install (`pip install -e`) and the vehicle list. For this week use `shipClarke83` (option 6). It is the rudder-steered ship whose constructor takes a current speed and direction (`V_c`, `beta_c`). The frigate has a heading autopilot too, but no current input.
+        lang: en
+      - id: pvs-shipclarke83-source
+        title: shipClarke83.py (vessel class, headingAutopilot method)
+        kind: read
+        tier: required
+        url: https://raw.githubusercontent.com/cybergalactic/PythonVehicleSimulator/master/src/python_vehicle_simulator/vehicles/shipClarke83.py
+        minutes: 15
+        plan: first
+        standing: canonical
+        standing_note: Thor I. Fossen, simulator author.
+        why: 'The code you will change, about 300 lines. In it: the current enters as relative velocity in `dynamics`; the rudder is clipped at `deltaMax = 30` deg after a first-order lag; the autopilot sets `wn = 0.3` and `zeta = 1`; and a reference model limits the desired yaw rate to `r_max = 1` deg/s, which smooths heading steps and so can hide windup.'
+        lang: en
+      - id: pvs-control-source
+        title: control.py, PIDpolePlacement
+        kind: read
+        tier: required
+        url: https://raw.githubusercontent.com/cybergalactic/PythonVehicleSimulator/master/src/python_vehicle_simulator/lib/control.py
+        minutes: 5
+        plan: first
+        standing: canonical
+        standing_note: Thor I. Fossen, simulator author.
+        why: 'The whole PID is about ten lines: `Kp = m*wn^2 - k`, `Kd = 2*zeta*wn*m - d`, `Ki = wn/10*Kp`, and the integral `e_int += h*e`. It integrates every step whether or not the rudder is at its stop, so there is no anti-windup and the break-it windup will appear without any change to the code.'
+        lang: en
+      - id: fossen-slides-ch7-nomoto
+        title: Fossen, TTK4190 lecture slides, ch. 7 "Autopilot Models for Course and Heading Control", slides 5-14
+        kind: read
+        tier: recommended
+        url: https://www.dropbox.com/scl/fi/rth0nv12xsrf0ar8bsbwv/Ch7.pdf?rlkey=bjpndrhdfuxzc8281fx3n2hk8&dl=0
+        minutes: 20
+        plan: when-needed
+        standing: canonical
+        standing_note: Thor I. Fossen's slides for NTNU TTK4190, linked from his Handbook repository (cybergalactic/FossenHandbook).
+        why: The Nomoto model, the plant the autopilot is designed against (yaw rate follows rudder through one time constant, and heading integrates yaw rate). It also separates course from heading, which you need when the current arrives - a heading autopilot holds the bow's direction, not the track.
+        lang: en
+      - id: fossen-slides-ch15-heading-autopilot
+        title: Fossen, TTK4190 lecture slides, ch. 15 "Motion Control Systems", slides 32-48 (PID pole placement; heading autopilot case study)
+        kind: read
+        tier: recommended
+        url: https://drive.google.com/file/d/1bJlyDYg5Le1PTa_0voSzYAO00ayzu9TA/view?usp=share_link
+        minutes: 30
+        plan: when-needed
+        standing: canonical
+        standing_note: Thor I. Fossen's slides for NTNU TTK4190, linked from his Handbook repository.
+        why: The derivation behind `PIDpolePlacement` (mass-damper-spring, pole placement, "integral 10 times slower than the natural frequency"). Also the autopilot block diagram, with compass, wave filter, reference model and control allocation `delta = tau_N / N_delta`. Every line of the simulator's controller is explained here.
+        lang: en
+  - step: Tune the gains
+    material:
+      - id: astrom-murray-ch11-tuning
+        title: Åström & Murray, Feedback Systems (2nd ed.), ch. 11 "PID Control", §11.1-11.3, pp. 11-1 to 11-15
+        kind: read
+        tier: required
+        url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-pid_24Jul2020.pdf
+        minutes: 45
+        plan: when-needed
+        standing: canonical
+        standing_note: Standard control textbook (Caltech CDS 110, used widely); free chapter PDF from the authors' FBSwiki.
+        why: What P, I and D each do, as plots of step responses, followed by tuning rules and model-based tuning. It shows why raising `wn` speeds the response until the rudder saturates and why lowering `zeta` buys speed with overshoot. Read §11.1-11.3 now; §11.4-11.5 belong to the break-it steps.
+        lang: en
+      - id: douglas-pid-part1
+        title: Understanding PID Control, Part 1 - What is PID control? (Brian Douglas, MathWorks)
+        kind: watch
+        tier: useful
+        url: https://www.mathworks.com/videos/series/understanding-pid-control.html
+        minutes: 12
+        plan: further
+        standing: canonical
+        standing_note: Brian Douglas's control series.
+        why: The series' opening episode builds intuition for the three terms before the textbook's algebra. Parts 2 and 3 are listed under the break-it steps. The series page lists all episodes.
+        lang: en
+  - step: Add a constant current
+    material:
+      - id: fossen-slides-ch10-currents
+        title: Fossen, TTK4190 lecture slides, ch. 10 "Environmental Forces and Moments", slides 59-63 (§10.3 ocean currents)
+        kind: read
+        tier: recommended
+        url: https://drive.google.com/open?id=1-Dk0AE7UrPKBOPdeKazJSIPymbp8x6cR&usp=drive_fs
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Thor I. Fossen's slides for NTNU TTK4190, linked from his Handbook repository.
+        why: The current enters through relative velocity (`nu_r = nu - nu_c`), with `V_c` and `beta_c` rotated into the body frame. That is the same computation shipClarke83.py does, and it explains why a steady current needs a steady rudder offset that only the integral term supplies.
+        lang: en
+      - id: astrom-murray-integral-action
+        title: Åström & Murray, Feedback Systems (2nd ed.), §11.1 "Basic Control Functions", integral action, pp. 11-2 to 11-6
+        kind: read
+        tier: useful
+        url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-pid_24Jul2020.pdf
+        minutes: 0
+        plan: when-needed
+        standing: canonical
+        standing_note: Standard control textbook; already counted under "Tune the gains".
+        why: Zero minutes because it is part of the reading above. Reread the integral-action argument (a constant disturbance leaves a P or PD controller with a steady error; integral action removes it) with the current switched on. Predict the steady heading error with `Ki = 0` before you run it.
+        lang: en
+  - step: Limit the rudder
+    material:
+      - id: astrom-murray-ch11-windup
+        title: Åström & Murray, Feedback Systems (2nd ed.), §11.4 "Integral Windup", pp. 11-15 to 11-19
+        kind: read
+        tier: required
+        url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-pid_24Jul2020.pdf
+        minutes: 20
+        plan: first
+        standing: canonical
+        standing_note: Standard control textbook; free chapter PDF from the authors.
+        why: The cruise-control-up-a-hill example plots windup (the integrator keeps charging while the actuator is at its stop, then overshoots) and the back-calculation anti-windup fix side by side. Your heading plot is that figure again, with the rudder at its stop in place of the throttle.
+        lang: en
+      - id: fossen-loop-closure-saturation
+        title: Fossen, TTK4190 slides ch. 15, slides 25-29 (successive loop closure; gains from maximum rudder; bandwidth separation)
+        kind: read
+        tier: recommended
+        url: https://drive.google.com/file/d/1bJlyDYg5Le1PTa_0voSzYAO00ayzu9TA/view?usp=share_link
+        minutes: 15
+        plan: first
+        standing: canonical
+        standing_note: Thor I. Fossen's TTK4190 slides.
+        why: The Beard and McLain rule picks Kp so that a step of nominal size just reaches the rudder limit (`u_max`, `e_max`). It shows how to choose gains from the saturation rather than meeting the limit after tuning. These slides are also the loop-closure material for the field tie. Slide 25 puts the inner loop under the outer one with a bandwidth factor of 5–10, and slide 29 shows the separation. This is the only free source that says why the inner loop must be faster, which the concept's quiz asks.
+        lang: en

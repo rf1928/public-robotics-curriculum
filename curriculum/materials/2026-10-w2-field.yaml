@@ -1,0 +1,105 @@
+steps:
+  - step: Map best effort and discovery traffic onto a lossy, narrow link
+    material:
+      - id: qos-lossy-networks
+        title: Using quality-of-service settings for lossy networks
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/topics/Working-with-topics/Quality-of-Service.html
+        minutes: 30
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Simulates 5 % packet loss with `tc netem` on loopback and compares reliable and best-effort image streams; the same tc command lets you make your own narrow, lossy "radio link" on one machine.
+        lang: en
+      - id: dds-tuning
+        title: Addressing common DDS tuning issues
+        kind: read
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Build/DDS-tuning.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+        why: Why large messages over WiFi stall (lost IP fragments fill kernel buffers), with the sysctl fixes; the concrete mechanism behind "reliable over a lossy link".
+        lang: en
+      - id: zenoh-discovery-overhead
+        title: Minimizing Discovery Overhead in ROS2
+        kind: read
+        tier: recommended
+        url: https://zenoh.io/blog/2021-03-23-discovery/
+        minutes: 20
+        standing: well-regarded
+        standing_note: Angelo Corsaro (ZettaScale, Zenoh lead, long-time DDS standards contributor); Zenoh later became an official ROS 2 RMW (rmw_zenoh).
+        why: Why DDS discovery grows with every reader and writer and swamps wireless links, with measured packet counts; vendor-authored, so treat the reduction figures as the vendor's own.
+        lang: en
+      - id: rf-datalink-thread
+        title: Is DDS suitable for RF datalink communication with intermittent connection? (ROS Discourse)
+        kind: read
+        tier: useful
+        url: https://discourse.openrobotics.org/t/is-dds-suitable-for-rf-datalink-communication-with-intermittent-connection/49145
+        minutes: 10
+        standing: well-regarded
+        standing_note: Includes an answer from Jaime Martín Losa (eProsima CEO, Fast DDS) on DDS over 2400 bps tactical radios in production.
+        why: 'Practitioner answer to exactly this step: static discovery, compressing transports, discovery server, and what bandwidth is "enough".'
+        lang: en
+      - id: discovery-server
+        title: Using Fast DDS Discovery Server as discovery protocol
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Introspection-and-analysis/Discovery-Server/Discovery-Server.html
+        minutes: 40
+        standing: well-regarded
+        standing_note: Community-contributed tutorial (eProsima) in the official Lyrical docs.
+        why: Replaces multicast all-to-all discovery with a server; the standard DDS answer to "discovery swamps the link".
+        lang: en
+      - id: rmw-zenoh-jazzy
+        title: Working with Zenoh (RMW implementation)
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/Get-Started/Installation/RMW-Implementations/Non-DDS-Implementations/Working-with-Zenoh.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical installation docs, Open Robotics.
+        why: rmw_zenoh is available as Lyrical binaries (`ros-lyrical-rmw-zenoh-cpp`); a router-based, non-DDS middleware that sidesteps multicast discovery. Short page; the rmw_zenoh README on GitHub has the configuration detail (couldn't be fetched, see below).
+        lang: en
+      - id: wireless-ros2-paper
+        title: Optimizing ROS 2 Communication for Wireless Robotic Systems (Lee, Kim, Chae, Park, 2025)
+        kind: read
+        tier: interesting
+        url: https://arxiv.org/abs/2508.11366
+        minutes: 30
+        standing: agent
+        standing_note: Recent arXiv paper (DGIST); chosen because it diagnoses the default Fast DDS behaviour on lossy links (fragmentation, retransmission timing, buffer bursts) rather than reporting a benchmark delta.
+        why: Explains, with measurements, why reliable large messages degrade so badly over WiFi, and fixes it purely with XML QoS configuration.
+        lang: en
+  - step: Compare with remote monitoring of a robotaxi or warehouse fleet
+    material:
+      - id: waymo-fleet-response
+        title: 'Fleet response: Lending a helpful hand to Waymo''s autonomously driven vehicles'
+        kind: read
+        tier: recommended
+        url: https://waymo.com/blog/2024/05/fleet-response
+        minutes: 8
+        standing: well-regarded
+        standing_note: First-party account from Waymo, the largest robotaxi operator; no outside source covers its remote-assistance design better.
+        why: Remote humans give context, never drive; the design choice that makes a robotaxi tolerant of a slow or lossy link to the operations centre.
+        lang: en
+      - id: zenoh-iac
+        title: 'Indy Autonomous Challenge (IAC): Experiences from the Trenches'
+        kind: read
+        tier: recommended
+        url: https://zenoh.io/blog/2021-09-28-iac-experiences-from-the-trenches/
+        minutes: 10
+        standing: agent
+        standing_note: Zenoh project blog (vendor-authored); my judgment rests on it being a concrete field report of ROS 2 telemetry from autonomous race cars over shared wireless backhaul.
+        why: Periodic telemetry matters more on time than reliably, so best effort for periodic data, reliable only for commands such as e-stop. The robotaxi/fleet monitoring trade-off in one deployment.
+        lang: en
+      - id: zenoh-ros2-integration
+        title: Integrating ROS2 with Eclipse zenoh
+        kind: read
+        tier: useful
+        url: https://zenoh.io/blog/2021-04-28-ros2-integration/
+        minutes: 20
+        standing: well-regarded
+        standing_note: Zenoh project blog (ZettaScale); Zenoh later became an official ROS 2 RMW.
+        why: Bridging a robot's local DDS traffic to a remote, Internet-scale monitor while keeping discovery local; the architecture fleet dashboards use.
+        lang: en

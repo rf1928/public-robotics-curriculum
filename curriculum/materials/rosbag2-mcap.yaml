@@ -1,0 +1,101 @@
+material:
+  - id: rosbag2-design-article
+    title: Karsten Knese, "ROS 2.0 rosbags" (ROS 2 design article, ros2bags branch), "Motivation" through "Technical requirements"
+    kind: read
+    tier: required
+    url: https://raw.githubusercontent.com/ros2/design/ros2bags/articles/rosbags.md
+    minutes: 10
+    plan: further
+    standing: canonical
+    standing_note: The design article that started rosbag2, linked as the "original design article" from the rosbag2 README; Karsten Knese (Open Robotics, then ROS 2 core developer).
+    why: |-
+      The orienting entry: what a bag is and why it sits under the whole stack.
+      - "Motivation" says why recording is core to ROS: data analysis and debugging of every layer, from a single trajectory up to a full AV sensor suite, written without deserialising messages so recording keeps up in real time.
+      - "Technical requirements: Determinism" asks for two timestamps per message (when it left the publisher, when the recorder received it). That is the log-time versus header-stamp distinction the replay plots in this week depend on.
+      It is a draft article (never published on design.ros2.org) and the implementation details are dated; read only these first sections.
+    lang: en
+  - id: ros2bag-play-verb-clock
+    title: ros2bag `play` verb source (lyrical branch), the `--clock`, `--clock-topics` and `--clock-topics-all` options
+    kind: read
+    tier: required
+    url: https://raw.githubusercontent.com/ros2/rosbag2/lyrical/ros2bag/ros2bag/verb/play.py
+    minutes: 5
+    plan: first
+    standing: canonical
+    standing_note: The rosbag2 maintainers' source for `ros2 bag play`; its argparse help is exactly what `ros2 bag play --help` prints on Lyrical.
+    why: |-
+      The one place the replay half of the criterion is written down (lines ~100-115).
+      - `--clock [Hz]` makes the player the ROS time source, publishing `/clock` at 40 Hz by default, and it drops any `/clock` recorded in the bag. So a bag recorded from Gazebo with `/clock` does not end up with two clock publishers.
+      - `--clock-topics` and `--clock-topics-all` instead update `/clock` right before each replayed message, which removes the up-to-25 ms jitter between a message and the clock at 40 Hz.
+      Every node that should follow the replayed time also needs `use_sim_time:=true`; the player only publishes the clock.
+    lang: en
+  - id: ros2-qos-override-recording
+    title: 'rosbag2: Overriding QoS Policies (ROS 2 Lyrical how-to guide)'
+    kind: read
+    tier: recommended
+    url: https://docs.ros.org/en/lyrical/Developer-Tools/Debugging/Testing/Overriding-QoS-Policies-For-Recording-And-Playback.html
+    minutes: 10
+    plan: when-needed
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical documentation, Open Robotics.
+    why: |-
+      Why transforms can disagree on replay even with the clock right. `/tf_static` is published once with transient_local durability; only reliability and durability decide whether a recorder or late subscriber gets it.
+      The guide says rosbag2 adapts its QoS when recording and tries to preserve the offered policy on playback, and shows the `--qos-profile-overrides-path` YAML for when that fails. Use it if static frames are missing from a replay (the "transforms disagree" break-it), and check with `ros2 bag info` that `/tf_static` was recorded at all.
+    lang: en
+  - id: mcap-cli
+    title: MCAP CLI
+    kind: do
+    tier: recommended
+    url: https://mcap.dev/guides/cli
+    minutes: 10
+    plan: when-needed
+    standing: canonical
+    standing_note: Official MCAP documentation.
+    why: '`mcap info`, `doctor`, `filter`, `recover`: inspect and repair a field log on a laptop without ROS, which is how remote support actually receives bags. The page now also lists `sort` and `merge`, and the binary installs from GitHub releases or Homebrew (no apt package).'
+    lang: en
+  - id: mcap-ros2-guide
+    title: MCAP — ROS 2 getting started
+    kind: read
+    tier: useful
+    url: https://mcap.dev/guides/getting-started/ros-2
+    minutes: 10
+    plan: further
+    standing: canonical
+    standing_note: Official MCAP documentation (Foxglove, format authors).
+    why: 'Useful rather than required: on Lyrical MCAP is already the default storage, so most of the page (installing the plugin, `-s mcap`) is unnecessary. Keep it for the storage-config example (compression, chunk size) and for converting older `.db3` bags with `ros2 bag convert` or `mcap convert`.'
+    lang: en
+  - id: mcap-introducing
+    title: Introducing the MCAP File Format (Foxglove blog, 2022)
+    kind: read
+    tier: useful
+    url: https://foxglove.dev/blog/introducing-the-mcap-file-format
+    minutes: 6
+    plan: further
+    standing: well-regarded
+    standing_note: Announcement by Foxglove, the format's authors, crediting the ROS Tooling Working Group (Emerson Knapp, Michael Orlov) for the spec.
+    why: What MCAP is as a container and what that buys in the field. It is append-only, so a log cut off by a crash or power loss can be recovered. It embeds message schemas, so it decodes without your workspace. It is indexed, so a tool reads one topic and time range without scanning the file. Complements `foxglove-mcap-default` (reproducible-replay), which covers the switch away from SQLite.
+    lang: en
+  - id: ros2-bag-from-node-py
+    title: Recording a bag from a node (Python) (ROS 2 Lyrical tutorial), §4 "Record synthetic data from a node"
+    kind: do
+    tier: useful
+    url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Recording-A-Bag-From-Your-Own-Node-Py.html
+    minutes: 20
+    plan: further
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+    why: |-
+      Writing a bag with `rosbag2_py.SequentialWriter` and explicit timestamps, without topics or a running graph.
+      This is the bridge between this week's two halves. Fossen's simulator has no ROS interface and only shows Matplotlib plots. Have the LLM write `simTime`/`simData` (plus `e_int`, which the loop does not store) to an `.mcap` with this API. Then the autopilot runs open in PlotJuggler and Foxglove next to the Gazebo bag, with gains in the metadata.
+    lang: en
+  - id: mcap-spec
+    title: MCAP format specification
+    kind: read
+    tier: useful
+    url: https://mcap.dev/spec
+    minutes: 30
+    plan: further
+    standing: canonical
+    standing_note: The format specification, Foxglove.
+    why: Log time versus publish time fields per message record; directly relevant to the stamp-versus-receipt analysis and to what a fault injector may rewrite.
+    lang: en

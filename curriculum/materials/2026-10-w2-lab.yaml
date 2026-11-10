@@ -1,0 +1,259 @@
+steps:
+  - step: Build a small system from the Lyrical tutorials, with the LLM writing the nodes
+    material:
+      - id: creating-a-workspace
+        title: Creating a workspace
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Underlay and overlay, rosdep, sourcing; the first thing to check when an LLM-written node "isn't found".
+        lang: en
+      - id: creating-a-package
+        title: Creating a package
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Creating-Your-First-ROS2-Package.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: package.xml, setup.py / CMakeLists and entry points; the files an LLM most often gets subtly wrong, so you must be able to read them.
+        lang: en
+      - id: colcon-tutorial
+        title: Using colcon to build packages
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Colcon-Tutorial.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: '--symlink-install, --packages-select and the build/install/log layout; useful once builds get slow or stale.'
+        lang: en
+  - step: Add a publisher, a subscriber and a service
+    material:
+      - id: py-pub-sub
+        title: Writing a simple publisher and subscriber (Python)
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
+        minutes: 25
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: The reference shape of a node; note where the QoS depth (the `10`) is passed, because the break-it activity changes exactly that argument.
+        lang: en
+      - id: py-service-client
+        title: Writing a simple service and client (Python)
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Writing-A-Simple-Py-Service-And-Client.html
+        minutes: 25
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Request/response and wait_for_service; the contrast with topics (a service call fails loudly, a topic does not) is the heart of this week's concept.
+        lang: en
+      - id: about-topics
+        title: Topics (concept)
+        kind: read
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/About-Topics.html
+        minutes: 5
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: Anonymous, many-to-many publish/subscribe; why a publisher never knows whether anyone heard it.
+        lang: en
+      - id: about-services
+        title: Services (concept)
+        kind: read
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/About-Services.html
+        minutes: 5
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: When to use a service instead of a topic, and why a service should return quickly.
+        lang: en
+      - id: cpp-pub-sub
+        title: Writing a simple publisher and subscriber (C++)
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html
+        minutes: 30
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Most driver and Nav2 code you will read later is rclcpp; seeing the same node in C++ makes LLM-written C++ reviewable.
+        lang: en
+      - id: custom-interfaces
+        title: Creating custom msg and srv files
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Custom-ROS2-Interfaces.html
+        minutes: 30
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Needed as soon as the system carries anything but strings; also explains why interfaces must live in an ament_cmake package.
+        lang: en
+      - id: py-action
+        title: Writing an action server and client (Python)
+        kind: do
+        tier: interesting
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/actions/Working-with-actions/Writing-an-Action-Server-Client/Py.html
+        minutes: 30
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: The third communication pattern (long-running goals with feedback); Nav2 is built on it, so it rounds out the picture before November.
+        lang: en
+  - step: Write a launch file that sets parameters
+    material:
+      - id: creating-launch-files
+        title: Creating a launch file
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Launch/Creating-Launch-Files.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Python, XML and YAML launch side by side, with namespaces and remapping in the first example.
+        lang: en
+      - id: parameters-in-a-class
+        title: Using parameters in a class (Python)
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Using-Parameters-In-A-Class-Python.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Declaring parameters in the node and setting them from a launch file; exactly this step.
+        lang: en
+      - id: about-parameters
+        title: Parameters (concept)
+        kind: read
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/About-Parameters.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: Parameters belong to nodes (no global server as in ROS 1); declaration, read-only and callbacks explain why an undeclared parameter is silently ignored.
+        lang: en
+      - id: managing-large-projects
+        title: Managing large projects
+        kind: do
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Launch/Using-ROS2-Launch-For-Large-Projects.html
+        minutes: 35
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: YAML parameter files, namespaces, remapping and launch arguments together; it is also the setup for the wrong-namespace break.
+        lang: en
+      - id: using-substitutions
+        title: Using substitutions
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Launch/Using-Substitutions.html
+        minutes: 25
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: LaunchConfiguration and friends; read it when an LLM-written launch file uses substitutions you can't follow.
+        lang: en
+      - id: launch-formats
+        title: Using Python, XML, and YAML for ROS 2 launch files
+        kind: read
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Launch/Launch-file-different-formats.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+        why: Same launch file in three formats; helps choose XML (shorter, declarative) over Python where logic isn't needed.
+        lang: en
+      - id: parameter-design
+        title: Parameter API design in ROS
+        kind: read
+        tier: interesting
+        url: https://design.ros2.org/articles/ros_parameters.html
+        minutes: 10
+        standing: canonical
+        standing_note: ROS 2 design article by Tully Foote (Open Robotics).
+        why: Why ROS 2 dropped the ROS 1 parameter server; the design reasoning behind the docs above.
+        lang: en
+  - step: Inspect the system with the ros2 command-line tools and rqt_graph
+    material:
+      - id: setting-up-turtlesim
+        title: Setting up Turtlesim
+        kind: do
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/Get-Started/Introducing-Turtlesim/Introducing-Turtlesim.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical how-to guide, Open Robotics.
+        why: Installs turtlesim and rqt (ros-lyrical-turtlesim, ros-lyrical-rqt); the four "Learning about" tutorials below all inspect a running turtlesim and list this page as their prerequisite, so do it first.
+        lang: en
+      - id: understanding-topics
+        title: Learning about topics
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/topics/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: rqt_graph, ros2 topic list/echo/info/hz/pub; the core diagnostic kit for the break-it activity.
+        lang: en
+      - id: understanding-nodes
+        title: Learning about nodes
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/nodes/Working-with-nodes/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: ros2 node list/info and runtime remapping of a node name.
+        lang: en
+      - id: understanding-services
+        title: Learning about services
+        kind: do
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/services/Working-with-services/Understanding-ROS2-Services/Understanding-ROS2-Services.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: ros2 service list/type/call; lets you poke your own service without writing a client.
+        lang: en
+      - id: introspection-cli
+        title: Introspection with command line tools
+        kind: read
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Introspection-and-analysis/About-Command-Line-Tools.html
+        minutes: 5
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: The full list of ros2 verbs (daemon, doctor, multicast...) and what the CLI daemon caches, which explains stale `ros2 topic list` output.
+        lang: en
+      - id: ros2doctor
+        title: Using ros2doctor to identify issues
+        kind: do
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Getting-Started-With-Ros2doctor.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Flags publishers without subscribers and network setup problems; run it in each break-it scenario to see what it catches and what it misses.
+        lang: en
+      - id: understanding-parameters
+        title: Learning about parameters
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/parameters/Working-with-parameters/Understanding-ROS2-Parameters/Understanding-ROS2-Parameters.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: ros2 param get/set/dump/load; confirms the launch file actually set what you think it set.
+        lang: en
+      - id: rqt-console
+        title: Using rqt_console to view logs
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/nodes/Working-with-nodes/Using-Rqt-Console/Using-Rqt-Console.html
+        minutes: 15
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: 'The sensei line "one warning, then silence" is literal here: the incompatible-QoS warning is logged once; rqt_console makes it findable after the fact.'
+        lang: en

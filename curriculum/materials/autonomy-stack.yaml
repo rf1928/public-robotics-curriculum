@@ -1,0 +1,51 @@
+material:
+  - id: pra-see-think-act
+    title: 'Principles of Robot Autonomy (Gammelli, Lorenzetti, Luo, Zardini, Pavone), Preface: "How is robot autonomy achieved?" to "Structure of the book", pp. 4–8'
+    kind: read
+    tier: required
+    url: https://arxiv.org/abs/2608.03496
+    minutes: 15
+    standing: canonical
+    standing_note: The course text of Stanford's Principles of Robot Autonomy (AA174A/AA274A/AA274B, taught since 2017, Marco Pavone); free pre-publication version of the Cambridge University Press book.
+    why: 'The orienting entry. The see-think-act loop (sensing, perception, filtering, localization and mapping, decision making, motion planning, trajectory generation, actuator control) as one figure. It then makes the point the curriculum depends on: the loop really runs as a graph of asynchronous components, each at its own rate (a 200 Hz controller, 10 Hz planner, 2 Hz mapper, 1 kHz IMU), with ROS carrying the edges. The book''s part structure is a ready-made skeleton for the diagram.'
+    lang: en
+  - id: stanley-architecture
+    title: 'Stanley: The Robot that Won the DARPA Grand Challenge (Thrun et al., Journal of Field Robotics 2006), section 3 "Software Architecture", pp. 665–668'
+    kind: read
+    tier: recommended
+    url: http://robots.stanford.edu/papers/thrun.stanley05.pdf
+    minutes: 20
+    standing: canonical
+    standing_note: Sebastian Thrun and the Stanford Racing Team; the founding paper of modern autonomous driving, taught and cited as the reference field system.
+    why: 'A real stack in six layers (sensor interface, perception, control, vehicle interface, user interface, global services), with the rates of each part. It has every piece of plumbing this curriculum covers: no central master, global timestamps instead of synchronisation, publish-subscribe, health monitors that restart stalled modules, and log-everything plus replay. It shows on one page why October and November are about plumbing.'
+    lang: en
+  - id: badue-self-driving-survey
+    title: 'Self-Driving Cars: A Survey (Badue et al., Expert Systems with Applications 2021), section 2 "Typical Architecture of Self-Driving Cars", pp. 3–5'
+    kind: read
+    tier: recommended
+    url: https://arxiv.org/abs/1901.04407
+    minutes: 15
+    standing: well-regarded
+    standing_note: Widely cited survey (UFES, Brazil) of autonomy architectures since the DARPA challenges; open arXiv version.
+    why: 'The standard block diagram of a road-autonomy stack: the perception system (localizer, mapper, moving-object tracker, traffic-signal detector) and the decision-making system (route planner, path planner, behaviour selector, motion planner, obstacle avoider, controller). Each block''s inputs and outputs are named, which is what placing every concept on a diagram needs. Skim section 5.2 (their own car''s software) for a second worked example.'
+    lang: en
+  - id: autoware-architecture
+    title: Autoware architecture overview
+    kind: read
+    tier: useful
+    url: https://docs.autoware.org/main/design/autoware-architecture-v1/
+    minutes: 10
+    standing: canonical
+    standing_note: Autoware Foundation reference architecture; the open-source road-autonomy stack built on ROS 2.
+    why: A stack you can actually install, in seven parts (sensing, map, localization, perception, planning, control, vehicle interface), with a node diagram behind it. The "left for later" list (fail-safe, HMI, real-time processing, redundancy, state monitoring) is a useful reminder of what a research stack leaves out. Short page; click into one stack's design page for depth.
+    lang: en
+  - id: paden-planning-hierarchy
+    title: A Survey of Motion Planning and Control Techniques for Self-driving Urban Vehicles (Paden, Čáp, Yong, Yershov, Frazzoli; IEEE T-IV 2016), section II "Overview of the Decision-Making Hierarchy"
+    kind: read
+    tier: useful
+    url: https://arxiv.org/abs/1604.07446
+    minutes: 15
+    standing: well-regarded
+    standing_note: Frazzoli's group (MIT); one of the most cited surveys of planning and control for automated driving.
+    why: The four planning levels (route, behavioural, motion planning, local feedback control) and what each hands down. That is where the unscheduled planning-hierarchy concept sits on the stack diagram. Section II only; the rest is method detail for later.
+    lang: en

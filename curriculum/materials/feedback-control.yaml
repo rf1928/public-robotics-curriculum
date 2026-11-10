@@ -1,0 +1,87 @@
+material:
+  - id: astrom-murray-ch1-orientation
+    title: Åström & Murray, Feedback Systems (2nd ed., v3.1.5), ch. 1 "Introduction", §1.1–1.3 What is feedback / feedforward / control (pp. 1-1 to 1-6), §1.6 Simple Forms of Feedback (pp. 1-18 to 1-20), §1.8 Control System Architectures (pp. 1-24 to 1-27)
+    kind: read
+    tier: required
+    url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-intro_24Jul2020.pdf
+    minutes: 25
+    plan: further
+    standing: canonical
+    standing_note: Standard control textbook (Princeton UP; Caltech CDS 110 and many other courses), by Åström, the reference author on PID, and Murray; free chapter PDF from the authors.
+    why: |-
+      The orienting entry: what feedback control is and where it sits.
+      - §1.3 defines control as the loop of sensing, computation and actuation. This is the last layer of the week-2 autonomy-stack diagram, the one that turns a plan into actuator commands.
+      - §1.2 and Table 1.1 contrast feedback (acts on deviations, robust to model error, can go unstable) with feedforward (acts on plans, needs a good model). That is the concept's last sentence in one table.
+      - §1.6 previews on-off, P and PID control and why P alone leaves a steady error.
+      - §1.8 (Fig. 1.19) shows simple loops stacked under optimisation and logic layers. That is the cascade idea before ch. 15 formalises it.
+    lang: en
+  - id: astrom-murray-ch2-refresher
+    title: Åström & Murray, Feedback Systems (2nd ed.), ch. 2 "Feedback Principles", §2.2 Linear Dynamical Models, §2.3 Using Feedback to Attenuate Disturbances, §2.4 Using Feedback to Track Reference Signals, pp. 2-5 to 2-20
+    kind: read
+    tier: required
+    url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-principles_24Jul2020.pdf
+    minutes: 45
+    plan: first
+    standing: canonical
+    standing_note: Same textbook and edition as the PID chapter the steps cite; the authors say ch. 2 is a self-contained preview of the whole book.
+    why: |-
+      The under-an-hour refresher, in the edition the rest of the week uses.
+      - §2.2 covers linear differential equations, characteristic roots, and real roots (decay) versus complex roots (damped oscillation). It defines the transfer function as the algebra of block diagrams.
+      - §2.3 places the closed-loop poles at s² + 2ζ_c ω_c s + ω_c² to design a PI controller, then shows why integral action removes the steady error left by a constant disturbance.
+      - §2.4 (Fig. 2.9) varies ω_c and ζ_c and shows the trade-offs in response time, overshoot and control effort.
+      These are the `wn` and `zeta` arguments of PIDpolePlacement in Fossen's simulator, and the constant disturbance is this week's current. It replaces the carried 1st-edition reading below as the core refresher.
+    lang: en
+  - id: fossen-book-15-2-successive-loop-closure
+    title: Fossen, Handbook of Marine Craft Hydrodynamics and Motion Control, 2nd ed. (Wiley 2021), §15.2 Autopilot Design Using Successive Loop Closure, pp. 516–522
+    kind: book
+    tier: recommended
+    minutes: 30
+    plan: further
+    standing: canonical
+    standing_note: Fossen is the standard reference for marine guidance, navigation and control; pages from the Wiley-VCH table of contents.
+    why: Cascaded loops in the field setting. An inner heading loop runs under an outer cross-track (line-of-sight) loop, with a bandwidth separation of 5–10×. This is the structure of the robotaxi steering controller under its planner. Fossen's free Ch. 15 slides (step entries `fossen-slides-ch15-heading-autopilot`, `fossen-loop-closure-saturation`) cover the same case, so the book is optional and counts only if bought.
+    lang: en
+  - id: douglas-feedforward
+    title: Brian Douglas, Control Systems in Practice, Part 3 – What Is Feedforward Control?, MATLAB Tech Talks (16 min)
+    kind: watch
+    tier: useful
+    url: https://www.mathworks.com/videos/control-systems-in-practice-part-3-what-is-feedforward-control-1535712796292.html
+    minutes: 16
+    plan: further
+    standing: canonical
+    standing_note: Brian Douglas; same author as the PID series above.
+    why: The feedforward half of the concept, which the PID videos leave out. The error splits into setpoint changes, disturbances and noise. Feedforward removes the first two before they reach the controller, so the feedback can stay gentle and ignore noise. In this week's terms, a measured current fed forward to the rudder leaves less for the integrator to wind up. It is the same structure as Autoware's longitudinal controller under the field-tie step.
+    lang: en
+  - id: astrom-murray-fbs-transfer-functions
+    title: Åström & Murray, Feedback Systems (1st ed., v2.10c), Ch. 8 Transfer Functions §8.1–8.3, pp. 229–249, plus §5.3 Input/Output Response, pp. 145–157
+    kind: read
+    tier: useful
+    url: https://introcontrol.mit.edu/_static/fall21/extras/Feedback%20Systems%20Murray.pdf
+    minutes: 50
+    plan: further
+    standing: canonical
+    standing_note: Standard free control textbook (Princeton UP 2008) by Åström, the reference author on PID; this is the authors' free edition, hosted for MIT 6.302.
+    why: Useful rather than required. `astrom-murray-ch2-refresher` now covers the refresher in the 2nd edition the steps use. Keep this for depth, for the second-order step-response formulas (rise time, overshoot as functions of ζ) and the damped spring-mass example. Page numbers are printed pages; the PDF page is the printed page + 12.
+    lang: en
+  - id: tugraz-regelungssysteme-pid
+    title: TU Graz IRT, Skriptum Regelungssysteme (WS 24/25), Kap. 2 PID-Regler, S. 13–24 (2.4.2 Windup-Effekt und Gegenmaßnahmen, S. 19–21)
+    kind: read
+    tier: interesting
+    url: https://www.tugraz.at/fileadmin/user_upload/Institute/IRT/Skripten/Regelungssysteme_WS2425.pdf
+    minutes: 30
+    plan: further
+    standing: agent
+    standing_note: Official TU Graz control-engineering lecture script (version 30.01.2025); chosen as a free German alternative to Lunze, no outside ranking found.
+    why: A German-tradition treatment of parallel and series PID, I-PD and PI-D forms, and windup. It has an anti-windup block diagram (Bild 2.7) and a simulated comparison with and without anti-windup. It gives a second angle and the German vocabulary.
+    lang: de
+  - id: 3b1b-differential-equations
+    title: 3Blue1Brown (Grant Sanderson), Differential Equations ch. 1 – "Differential equations, studying the unsolvable" (the damped pendulum)
+    kind: watch
+    tier: interesting
+    url: https://www.3blue1brown.com/lessons/differential-equations
+    minutes: 27
+    plan: further
+    standing: canonical
+    standing_note: 3Blue1Brown.
+    why: The damped pendulum shown as a vector field in phase space, with oscillation and damping as spirals into a fixed point, plus how a simulator steps an ODE forward. It is geometric intuition for the refresher. It is not needed if the algebra in ch. 2 lands.
+    lang: en

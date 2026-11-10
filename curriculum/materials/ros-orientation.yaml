@@ -1,0 +1,101 @@
+material:
+  - id: pra-robot-autonomy-software
+    title: Principles of Robot Autonomy (Gammelli, Lorenzetti, Luo, Zardini, Pavone), chapter "Robot Autonomy Software", pp. 15–24
+    kind: read
+    tier: required
+    url: https://arxiv.org/abs/2608.03496
+    minutes: 25
+    standing: canonical
+    standing_note: The course text of Stanford's Principles of Robot Autonomy (AA174A/AA274A/AA274B, taught since 2017, Marco Pavone); free pre-publication version of the Cambridge University Press book.
+    why: 'The orienting entry. Why robot software is unlike other software (concurrency, devices, rates, reuse), why that calls for a middleware, ROS''s history from STAIR and Willow Garage to ROS 2, its design principles, and its core concepts. It also places ROS under the autonomy stack: "not strictly part of the stack", but what every layer runs on. That is the first half of the one-page note.'
+    lang: en
+  - id: ros2-science-robotics
+    title: 'Robot Operating System 2: Design, Architecture, and Uses In The Wild (Macenski, Foote, Gerkey, Lalancette, Woodall)'
+    kind: read
+    tier: recommended
+    url: https://arxiv.org/abs/2211.07752
+    minutes: 30
+    standing: canonical
+    standing_note: Science Robotics 2022 (open arXiv version); authors are the ROS 2 and Nav2 leads; the standard citation for ROS 2.
+    why: The ROS 2 maintainers' own account of the layers (client libraries, rmw, DDS, QoS, executors) and of where ROS 2 is used in the field. The uses-in-the-wild section is the evidence base for "what a team gains",.
+    lang: en
+  - id: ros2-commercial-challenges
+    title: Challenges with ROS2 on commercial robots (ROS Discourse thread, 2025)
+    kind: read
+    tier: recommended
+    url: https://discourse.openrobotics.org/t/challenges-with-ros2-on-commercial-robots/42784
+    minutes: 15
+    standing: agent
+    standing_note: 'Judged on content: first-hand reports from engineers at Nobleo, Nauticus Robotics (subsea), Dexory and Cellumation, plus a summary of an NVIDIA talk; no outside endorsement.'
+    why: '"What it costs them", from people shipping it: bag replay tied to a matching workspace, no optional fields in message definitions, poorly understood executors, DDS scaling limits (about 60 participants), rosdep image bloat, and a subsea team that wrote its own comms for an acoustic modem. No better-sourced list of ROS 2''s costs in production exists that I could find.'
+    lang: en
+  - id: moos-ivp-design
+    title: An Overview of MOOS-IvP and a Users Guide to the IvP Helm, Release 13.2 (Benjamin, Schmidt, Newman, Leonard), section 2 "Design Considerations", pp. 15–21
+    kind: read
+    tier: recommended
+    url: https://oceanai.mit.edu/moos-ivp-pdf/moosivp-helm-13.2.pdf
+    minutes: 20
+    standing: well-regarded
+    standing_note: MIT and Oxford (Michael Benjamin, Henrik Schmidt, John Leonard, Paul Newman); MOOS-IvP is the open marine-autonomy stack taught in MIT 2.680 and run on many AUVs and USVs.
+    why: The criterion's "one kind of system that would not use it", from marine autonomy. A marine-autonomy stack with its own publish-subscribe middleware (a star around the MOOSDB, not peer-to-peer DDS). Its backseat-driver split puts autonomy on a payload computer and leaves the vehicle maker's controller in charge of control. It is also the cleanest picture of where the autonomy stack stops and the vehicle starts (see autonomy-stack). The PDF is 40 MB and dates from 2013; only section 2 is needed.
+    lang: en
+  - id: ros2-distributions
+    title: Distributions (ROS 2 Lyrical docs)
+    kind: read
+    tier: useful
+    url: https://docs.ros.org/en/lyrical/Releases.html
+    minutes: 5
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical documentation, Open Robotics.
+    why: What a distribution is, the release cadence, and the support table (Lyrical LTS, May 2026 to May 2031, for Ubuntu 26.04; Jazzy, the previous LTS, May 2024 to May 2029, for Ubuntu 24.04). Backs one sentence of the note with a source.
+    lang: en
+  - id: micro-ros-features
+    title: micro-ROS features and architecture
+    kind: read
+    tier: useful
+    url: https://micro.vulcanexus.org/docs/overview/features/
+    minutes: 8
+    standing: canonical
+    standing_note: Official micro-ROS documentation (ROS 2 Embedded Working Group, eProsima); the site moved from micro.ros.org.
+    why: Where ROS 2 stops at the bottom of the stack. Microcontrollers join a ROS 2 graph only through rclc, Micro XRCE-DDS and an agent on a Linux host, on FreeRTOS, Zephyr or NuttX. Useful for the "what it is not" paragraph.
+    lang: en
+  - id: gazebo-ros2-overview
+    title: ROS 2 integration overview (Gazebo Jetty docs)
+    kind: read
+    tier: useful
+    url: https://gazebosim.org/docs/jetty/ros2_overview/
+    minutes: 5
+    standing: canonical
+    standing_note: Official Gazebo Jetty documentation, Open Robotics.
+    why: Gazebo has its own middleware (Gazebo Transport), and ros_gz bridges it to ROS 2; that is the "separate simulator joined by a bridge" in the concept text. Jetty is the Gazebo release paired with Lyrical.
+    lang: en
+  - id: quigley-2009-ros
+    title: 'ROS: an open-source Robot Operating System (Quigley, Gerkey, Conley, Faust, Foote, Leibs, Berger, Wheeler, Ng; ICRA 2009 workshop)'
+    kind: read
+    tier: useful
+    url: http://www.robotics.stanford.edu/~ang/papers/icraoss09-ROS.pdf
+    minutes: 20
+    standing: canonical
+    standing_note: The original ROS paper by its creators (Stanford and Willow Garage); one of the most cited papers in robotics software.
+    why: Opens with "ROS is not an operating system in the traditional sense" and sets out the design goals (peer-to-peer, tools-based, multi-lingual, thin, free) that ROS 2 kept. Read sections I–II; the use cases are dated.
+    lang: en
+  - id: picknik-ros2-user-stories
+    title: 'Customer Stories: Report on Needs of the ROS 2 Community (PickNik, 2019)'
+    kind: read
+    tier: interesting
+    url: https://picknik.ai/docs/ROS2_User_Stories_Report.pdf
+    minutes: 20
+    standing: well-regarded
+    standing_note: PickNik (Dave Coleman, MoveIt lead) for AWS and the ROS 2 Technical Steering Committee; 15 interviews with users and non-users.
+    why: Why teams chose not to use ROS, and what held them on ROS 1, asked directly. Dated (ROS 2 Crystal era), so read it as history of the costs; the 2025 Discourse thread above is the current picture.
+    lang: en
+  - id: apex-ros2-iso26262
+    title: ROS 2 ISO 26262 Certification and Thank You (Apex.AI, ROS Discourse, 2021)
+    kind: read
+    tier: interesting
+    url: https://discourse.openrobotics.org/t/ros-2-iso-26262-certification-and-thank-you/19249
+    minutes: 5
+    standing: agent
+    standing_note: Vendor announcement by Dejan Pangercic (Apex.AI CTO); judged as a primary statement of the vendor's position, not as neutral evidence.
+    why: 'One answer to "why don''t production cars use ROS 2": it is not real-time and not certified. Apex.AI''s answer was a certified ROS 2 derivative (Apex.OS, ISO 26262 ASIL D). Shows what a road-autonomy team has to add or buy on top of ROS 2.'
+    lang: en

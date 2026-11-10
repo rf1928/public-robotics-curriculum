@@ -1,0 +1,106 @@
+material:
+  - id: webviz-announcement
+    title: Webviz - ROS data visualization in the browser (Open Robotics Discourse, 2019), first post
+    kind: read
+    tier: required
+    url: https://discourse.openrobotics.org/t/webviz-ros-data-visualization-in-the-browser/9783
+    minutes: 5
+    plan: further
+    standing: agent
+    standing_note: Announcement by the Cruise visualization-tools team (jtbandes); Webviz became Foxglove Studio. Chosen as the clearest short placement of these tools; there is no canonical overview to cite.
+    why: |-
+      The orienting entry: what these tools are for and what they replaced.
+      Log visualisation sits beside the stack, not in it: it reads the same topics as every layer and shows them to a person. The post lists the ROS tools one window absorbed (RViz for 3D and TF, rqt_plot for time series, rqt_image_view, rqt_console, `ros2 topic echo`) and the workflow that came with it: drop a bag in, arrange panels, export the layout as JSON.
+      PlotJuggler covers the rqt_plot part with far more depth (thousands of series, transforms, XY plots). Foxglove covers the rest, live or from a file. That split is how the criterion divides the work.
+    lang: en
+  - id: plotjuggler-readme
+    title: PlotJuggler README (install, ROS 2 plugins, tutorials)
+    kind: read
+    tier: required
+    url: https://github.com/facontidavide/PlotJuggler
+    minutes: 10
+    plan: when-needed
+    standing: canonical
+    standing_note: Davide Faconti, PlotJuggler author (also BehaviorTree.CPP); the standard ROS time-series plotting tool.
+    why: Install route (on Lyrical only `ros-lyrical-plotjuggler` is packaged, without the ROS 2 plugins, checked 2026-10-13; build plotjuggler-ros-plugins from source as its README describes, then launch with `ros2 run plotjuggler plotjuggler`; the snap works with ROS 2 only "with some limitations") and the feature map, including live ROS 2 topic streaming. The README (via raw.githubusercontent.com, 2026-10-11) shows version 3.17; no PlotJuggler 4 announcement was found. The README also warns not to visit plotjuggler.com, which the author says is an impersonating phishing site.
+    lang: en
+  - id: plotjuggler-tutorials-faconti
+    title: PlotJuggler tutorials 2–3 (data, transforms) by Davide Faconti
+    kind: do
+    tier: required
+    url: https://slides.com/davidefaconti/plotjuggler-data
+    minutes: 25
+    plan: further
+    standing: canonical
+    standing_note: The author's own tutorials, linked from the README.
+    why: 'Time alignment and custom transforms (derivative, Lua functions); custom functions are how to plot header stamp minus receipt time. Part 3: https://slides.com/davidefaconti/plotjuggler-transforms (both load, 2026-10-11). Narrowed by the assemble batch to parts 2 and 3: part 1 is the step entry `plotjuggler-basics`.'
+    lang: en
+  - id: foxglove-ros2
+    title: Foxglove with ROS 2 (getting started)
+    kind: do
+    tier: required
+    url: https://docs.foxglove.dev/docs/getting-started/frameworks/ros2
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: Official Foxglove documentation.
+    why: Opening a bag versus a live connection; the two modes the criterion names. It starts with "Create a free Foxglove account" - the app needs a sign-in since Foxglove 2.0 (see `foxglove-2-0-announcement`).
+    lang: en
+  - id: foxglove-bridge-jazzy
+    title: foxglove_bridge README (ROS 2 Lyrical package docs), "Motivation", install and configuration
+    kind: read
+    tier: required
+    url: https://docs.ros.org/en/lyrical/p/foxglove_bridge/
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: The package's own README as published on docs.ros.org for Lyrical (foxglove_bridge 3.6.0, `ros-lyrical-foxglove-bridge`), maintained by Foxglove.
+    why: |-
+      The "views live topics from a remote robot" part of the criterion.
+      "Motivation" states the problem: RViz needs a GUI on the robot or an identical ROS install with all custom messages on the laptop, and rosbridge chokes on high-rate or large messages. The bridge sends ROS 2 data over one WebSocket (port 8765), so the Jetson's topics reach the laptop without DDS discovery crossing the network. On the Jetson the bridge runs inside the Lyrical container, so publish port 8765 (or use host networking) or the laptop sees nothing.
+      The parameter list (topic whitelist, buffer limits) is what keeps a point cloud from saturating a field Wi-Fi link.
+    lang: en
+  - id: foxglove-3d-panel
+    title: Foxglove 3D panel
+    kind: read
+    tier: recommended
+    url: https://docs.foxglove.dev/docs/visualization/panels/3d
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: Official Foxglove documentation.
+    why: Display frame, TF tree inspection, point clouds and URDF together; the November week 2 "cloud sits where the camera points" check happens here. One sentence matters this week - to draw an object, the panel needs a transform path to the display frame at or before the object's `header.stamp`, "NOT the log time". A replay whose clocks disagree therefore shows missing or frozen objects, not wrong plots.
+    lang: en
+  - id: foxglove-bridge
+    title: foxglove_bridge (Foxglove docs)
+    kind: read
+    tier: useful
+    url: https://docs.foxglove.dev/docs/connecting-to-data/ros-foxglove-bridge
+    minutes: 5
+    plan: further
+    standing: canonical
+    standing_note: Official Foxglove documentation; foxglove_bridge is released into Lyrical (docs.ros.org/en/lyrical/p/foxglove_bridge).
+    why: The URL now redirects to docs.foxglove.dev/docs/fleet/bridge, which mostly covers remote access through Foxglove's platform (a device token, no direct network path). That matters only if the Jetson is not reachable from the laptop; the Lyrical README above covers the direct WebSocket case.
+    lang: en
+  - id: foxglove-2-0-announcement
+    title: Foxglove 2.0 - integrated UI, new pricing, and open source changes (Open Robotics Discourse, March 2024)
+    kind: read
+    tier: useful
+    url: https://discourse.openrobotics.org/t/foxglove-2-0-integrated-ui-new-pricing-and-open-source-changes/36583
+    minutes: 5
+    plan: further
+    standing: well-regarded
+    standing_note: Announcement and replies by Adrian Macneil, Foxglove CEO, on the ROS community forum.
+    why: Why the app wants an account and what is still open. Foxglove Studio's open-source edition was discontinued; the 1.x code stays on GitHub. There is a free plan for up to 3 users and a free academic plan. MCAP stays a separate open-source format, so recordings never depend on the viewer. Worth knowing before a client asks whether their logs can be viewed without a Foxglove account.
+    lang: en
+  - id: lichtblick
+    title: Lichtblick (README)
+    kind: read
+    tier: interesting
+    url: https://raw.githubusercontent.com/lichtblick-suite/lichtblick/main/README.md
+    minutes: 3
+    plan: further
+    standing: agent
+    standing_note: Open-source (MPL-2.0) continuation of the Foxglove Studio 1.x code; chosen as the account-free alternative, no outside ranking found.
+    why: An integrated visualiser forked from Foxglove Studio, in the browser or as a desktop app, with no sign-in. Useful where a client's policy forbids cloud accounts; the panels and layouts will look familiar.
+    lang: en

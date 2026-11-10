@@ -1,0 +1,71 @@
+steps:
+  - step: Map your windup plot onto a vessel autopilot fighting a cross-current
+    material:
+      - id: sperry-bias-integrator-patent
+        title: US 5,034,895 "Enhanced performance bias integrator for marine automatic pilot system" (Sperry Marine, 1991)
+        kind: read
+        tier: interesting
+        url: https://patents.google.com/patent/US5034895
+        minutes: 15
+        plan: further
+        standing: agent
+        standing_note: Sperry Marine patent (Johnson, Bird, Bennett); chosen as a primary source showing how a commercial ship autopilot treats the integrator.
+        why: In industry the integrator output is a named signal, the "rudder order bias", holding course against wind, seaway and hull asymmetry. The patent is about managing its time constant (restart fast, then slow), a practical answer to the same tension your windup plot shows.
+        lang: en
+  - step: Place a robotaxi's steering controller as the inner loop of a cascade under its planner
+    material:
+      - id: astrom-murray-ch15-architecture
+        title: Åström & Murray, Feedback Systems (2nd ed.), ch. 15 "Architecture and System Design", §15.3 Example 15.1 "Autonomous driving" and Fig. 15.10, pp. 15-9 to 15-12; "Cascade Control", p. 15-18
+        kind: read
+        tier: required
+        url: http://www.cds.caltech.edu/~murray/books/AM08/pdf/fbs-architecture_24Jul2020.pdf
+        minutes: 20
+        plan: when-needed
+        standing: canonical
+        standing_note: Standard control textbook; Murray led Caltech's DARPA Urban Challenge team, the source of Example 15.1.
+        why: The concept in one place. The trajectory is the "hourglass" between planner and tracking controller, and a two-degree-of-freedom design pairs a feedforward from trajectory generation with feedback on the error. Cascade control puts a fast inner loop on an extra sensor under a slow outer loop.
+        lang: en
+      - id: paden-survey-hierarchy-control
+        title: Paden et al., "A Survey of Motion Planning and Control Techniques for Self-driving Urban Vehicles" (IEEE T-IV 2016), §II (pp. 3-4) and §V intro-V.A (pp. 17-19)
+        kind: read
+        tier: recommended
+        url: https://arxiv.org/abs/1604.07446
+        minutes: 25
+        plan: further
+        standing: well-regarded
+        standing_note: Widely cited survey (Paden, Čáp, Yong, Yershov, Frazzoli; MIT / nuTonomy), IEEE Transactions on Intelligent Vehicles.
+        why: Fig. 1's hierarchy (route, behaviour, motion planning, local feedback control) names the layers. §V states the controller's job - stabilise to the planner's path or trajectory despite model error - which is the inner loop's contract with the planner.
+        lang: en
+      - id: autoware-mpc-lateral
+        title: MPC Lateral Controller (Autoware Universe docs), "Design" and "How to tune MPC parameters"
+        kind: read
+        tier: recommended
+        url: https://autowarefoundation.github.io/autoware_universe/main/control/autoware_mpc_lateral_controller/
+        minutes: 20
+        plan: further
+        standing: canonical
+        standing_note: Official documentation of Autoware Universe (Autoware Foundation), the main open-source robotaxi stack, built on ROS 2.
+        why: A production steering controller, sitting under the planner's trajectory and above the vehicle's own steering servo, which it models as a first-order lag with delay (`steering_tau`, `steering_delay`). "Late onset of steering in curves" is blamed on getting that inner loop's model wrong. A steering-offset remover plays the role the integrator plays on the vessel.
+        lang: en
+      - id: autoware-pid-longitudinal
+        title: PID Longitudinal Controller (Autoware Universe docs), "Logics" - FeedForward and PID control
+        kind: read
+        tier: recommended
+        url: https://autowarefoundation.github.io/autoware_universe/main/control/autoware_pid_longitudinal_controller/
+        minutes: 15
+        plan: when-needed
+        standing: canonical
+        standing_note: Official Autoware Universe documentation (Autoware Foundation).
+        why: 'This week''s concept running in a robotaxi stack: feedforward from the trajectory, PID only for what the model misses, and a cap on each term''s output against windup and derivative noise. Integration is paused while the vehicle is stopped, so the integrator cannot charge against a held brake - the same windup you produce with the rudder at its stop.'
+        lang: en
+      - id: snider-steering-methods
+        title: Snider, "Automatic Steering Methods for Autonomous Automobile Path Tracking" (CMU-RI-TR-09-08, 2009), ch. 2 "Geometric Path Tracking", pp. 8-17
+        kind: read
+        tier: useful
+        url: https://publications.ri.cmu.edu/storage/publications/pub_files/2009/2/Automatic_Steering_Methods_for_Autonomous_Automobile_Path_Tracking.pdf
+        minutes: 25
+        plan: further
+        standing: well-regarded
+        standing_note: CMU Robotics Institute report from the Urban Challenge era; the standard reference for pure pursuit and the Stanley controller, cited by Autoware's MPC docs.
+        why: The two simplest path trackers, with their gain/speed trade-offs on real courses. They are what sits in the inner-loop box on a small robot (Nav2's Regulated Pure Pursuit is the first), and they make the cascade concrete before MPC.
+        lang: en

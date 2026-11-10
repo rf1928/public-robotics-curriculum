@@ -1,0 +1,69 @@
+material:
+  - id: fossen-slides-ch1-models
+    title: Fossen, TTK4190 lecture slides, ch. 1 "Introduction to Part I", slides 8-15 (degrees of freedom; classification of models; Fossen's marine craft model)
+    kind: read
+    tier: required
+    url: https://www.dropbox.com/scl/fi/0t35ol7qjkbtq2y2tjtmr/Ch1.pdf?rlkey=733g820vq4vfxdn8pd9zl8xt9&dl=0
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: Thor I. Fossen's slides for NTNU TTK4190 (updated 2025-07-02), linked from his Handbook repository (cybergalactic/FossenHandbook).
+    why: |-
+      The orienting entry: what the simulator is and where it sits.
+      - Slide 12 separates three models of one vessel: the simulation model (the most accurate, used as the plant), the control design model (reduced, used to compute PID gains), and the state-estimator model (adds sensor dynamics and disturbances). The simulator is the first; the Nomoto model the autopilot is tuned from is the second. Knowing which is which is what makes a tuning result transferable.
+      - Slide 9 says heading autopilots use 1-DOF yaw models, while 3-DOF horizontal-plane models are for path following and DP.
+      - Slides 13-15 introduce the matrix-vector equations of motion every vehicle class in the simulator implements.
+      In the autonomy stack the simulator stands in for the vessel and its environment, so control can be developed before there is hardware.
+    lang: en
+  - id: pvs-mainloop-source
+    title: mainLoop.py, simulate() (Python Vehicle Simulator)
+    kind: read
+    tier: recommended
+    url: https://raw.githubusercontent.com/cybergalactic/PythonVehicleSimulator/master/src/python_vehicle_simulator/lib/mainLoop.py
+    minutes: 5
+    plan: first
+    standing: canonical
+    standing_note: Thor I. Fossen, simulator author.
+    why: |-
+      The 40-line loop where every change this week goes.
+      Each step calls the controller with the true `eta` and `nu`, stores the signals, then advances `dynamics()` and the attitude with forward Euler at `sampleTime`.
+      - Measurement noise for the derivative break goes between the state and the `headingAutopilot` call.
+      - Signals to keep (commanded and actual rudder are stored; `e_int` is not) go into `signals`.
+      - The step size matters: Euler at a coarse `sampleTime` adds numerical damping or instability that can be mistaken for a tuning effect.
+      Read it before asking the LLM to change anything, so the change lands in the right place.
+    lang: en
+  - id: fossen-book-ch7-15-3
+    title: Fossen, Handbook of Marine Craft Hydrodynamics and Motion Control, 2nd ed. (Wiley 2021), Ch. 7 Autopilot Models for Course and Heading Control, pp. 183–194; §15.3 PID Pole-Placement Algorithms, pp. 523–550
+    kind: book
+    tier: recommended
+    minutes: 90
+    plan: further
+    standing: canonical
+    standing_note: The book the simulator implements; pages from the Wiley-VCH table of contents.
+    why: The full derivation behind the simulator's gains. It starts from the Nomoto model (§7.2, pp. 186–194) and goes to SISO PID pole placement and the bandwidth–ω_n relation (§15.3). §10.3 (pp. 300–308) shows how current enters as relative velocity, which is the bias the integrator must cancel. Read it only if the slides leave gaps; it counts only if bought (see the Books section).
+    lang: en
+  - id: fossen-slides-ch6-linear-maneuvering
+    title: Fossen, TTK4190 lecture slides, ch. 6 "Maneuvering Models for Ships and USVs" (3rd-edition draft), slides 42-44 (ocean current in BODY and NED; 3-DOF linear maneuvering model; surge and sway-yaw subsystems)
+    kind: read
+    tier: useful
+    url: https://www.dropbox.com/scl/fi/f2ipl6gxs9a826b6i06dw/Ch6.pdf?rlkey=utqhkxv7y353rittx1dnte0fo&dl=0
+    minutes: 15
+    plan: further
+    standing: canonical
+    standing_note: Thor I. Fossen's TTK4190 slides, updated 2026-08-27 for the Handbook's 3rd edition; linked from the FossenHandbook repository.
+    why: |-
+      `shipClarke83` is "a linear maneuvering model ... using the Clarke (1983) formulas". These three slides are that model's form.
+      The linear surge-sway-yaw equations are linearised at a cruise speed U0 and split into a surge subsystem and a sway-yaw subsystem; the rudder enters the latter. Slide 42 is the current computation the class performs.
+      This shows what the model leaves out: speed changes, roll, waves. A gain set tuned here is tuned for one speed, which is why real autopilots gain-schedule with speed.
+    lang: en
+  - id: mss-overview-paper
+    title: 'Perez, Smogeli, Fossen & Sørensen, "An Overview of the Marine Systems Simulator (MSS): A Simulink Toolbox for Marine Control Systems", Modeling, Identification and Control 27(4), 2006, pp. 259-275, §1 and §4.1'
+    kind: read
+    tier: interesting
+    url: https://www.mic-journal.no/PDF/2006/MIC-2006-4-4.pdf
+    minutes: 15
+    plan: further
+    standing: well-regarded
+    standing_note: Peer-reviewed paper (open-access Norwegian control journal) by the NTNU group that built MSS, the MATLAB toolbox the Python simulator's vehicle models come from.
+    why: The lineage and design intent of the simulator family. It covers the GNC module structure (guidance, navigation, control blocks around a vessel model) and the split between maneuvering and seakeeping models. It is 2006 and Simulink-centred, so read it for the architecture, not the tooling.
+    lang: en

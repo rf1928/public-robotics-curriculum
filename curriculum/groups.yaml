@@ -1,0 +1,11 @@
+# The five competency groups every concept belongs to.
+- id: systems-plumbing
+  title: Systems plumbing
+- id: sensing-and-fusion
+  title: Sensing and fusion
+- id: control-and-actuation
+  title: Control and actuation
+- id: world-representation
+  title: World representation
+- id: decision-under-uncertainty
+  title: Decision under uncertainty

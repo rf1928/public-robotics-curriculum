@@ -1,0 +1,161 @@
+steps:
+  - step: Pair a reliable subscriber with a best-effort publisher
+    material:
+      - id: qos-settings
+        title: Quality of Service settings
+        kind: read
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/interfaces/topics/About-Quality-of-Service-Settings.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: The compatibility tables (best-effort publisher + reliable subscriber = no connection; volatile publisher + transient-local subscriber likewise) and the "requested incompatible QoS" event; use `ros2 topic info -v` to see both sides' profiles.
+        lang: en
+      - id: incompatible-qos-no-warning
+        title: ROS2 Foxy incompatible QoS policies no warnings (ROS Answers)
+        kind: read
+        tier: useful
+        url: https://answers.ros.org/question/371257/
+        minutes: 5
+        standing: agent
+        standing_note: User question on the ROS Answers archive; chosen because it is this exact break, reproduced, with the missing-warning symptom.
+        why: Shows the failure as a user meets it (no data, no warning) and points at registering an incompatible-QoS event callback; check whether Lyrical now warns where Foxy did not.
+        lang: en
+      - id: qos-design
+        title: ROS 2 Quality of Service policies (design article)
+        kind: read
+        tier: interesting
+        url: https://design.ros2.org/articles/qos.html
+        minutes: 8
+        standing: canonical
+        standing_note: ROS 2 design article by Esteve Fernandez (Open Robotics).
+        why: Opens with "inexpensive robots using unreliable wireless networks"; why QoS exists at all, in the designers' words.
+        lang: en
+      - id: qos-deadline-liveliness
+        title: ROS QoS - Deadline, Liveliness, and Lifespan
+        kind: read
+        tier: interesting
+        url: https://design.ros2.org/articles/qos_deadline_liveliness_lifespan.html
+        minutes: 15
+        standing: canonical
+        standing_note: ROS 2 design article (Nick Burek, 2019).
+        why: Deadline and liveliness are the QoS tools that turn "silent" into "detected"; relevant to the one-page explanation.
+        lang: en
+  - step: Put one node in the wrong namespace
+    material:
+      - id: node-arguments
+        title: Passing ROS arguments to nodes via the command-line
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Introspection-and-analysis/Node-arguments.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+        why: Namespace and topic remapping with `--ros-args -r __ns:=/x`; the quickest way to put a node in the wrong namespace and back.
+        lang: en
+      - id: topic-name-mapping
+        title: Topic and Service name mapping to DDS
+        kind: read
+        tier: recommended
+        url: https://design.ros2.org/articles/topic_and_service_names.html
+        minutes: 20
+        standing: canonical
+        standing_note: ROS 2 design article by William Woodall (Open Robotics, ROS 2 middleware lead).
+        why: Relative versus absolute versus private (~) names and how they become DDS topics; explains why `chatter` and `/chatter` behave differently under a namespace.
+        lang: en
+      - id: remapping-design
+        title: Remapping Names (design article)
+        kind: read
+        tier: useful
+        url: https://design.ros2.org/articles/static_remapping.html
+        minutes: 15
+        standing: canonical
+        standing_note: ROS 2 design article by Shane Loretz (Open Robotics).
+        why: The rules for what a remap matches and in what order; useful when a launch-file remap "doesn't take".
+        lang: en
+  - step: Run two processes on different domain IDs
+    material:
+      - id: about-domain-id
+        title: The ROS_DOMAIN_ID
+        kind: read
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/nodes/About-Domain-ID.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: How the domain ID maps to UDP ports, why domains never see each other, and the safe range of IDs.
+        lang: en
+      - id: about-discovery
+        title: Discovery (concept)
+        kind: read
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/nodes/About-Discovery.html
+        minutes: 3
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: Three paragraphs on how nodes find each other; the base for the domain and field-tie steps.
+        lang: en
+      - id: configuring-environment
+        title: Setting up your environment
+        kind: do
+        tier: required
+        url: https://docs.ros.org/en/lyrical/Get-Started/Configuring-ROS2-Environment.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Where ROS_DOMAIN_ID and ROS_AUTOMATIC_DISCOVERY_RANGE are set, and why one terminal without the export is a different domain.
+        lang: en
+      - id: improved-dynamic-discovery
+        title: Using Improved Dynamic Discovery
+        kind: do
+        tier: recommended
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Introspection-and-analysis/Improved-Dynamic-Discovery.html
+        minutes: 10
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: ROS_AUTOMATIC_DISCOVERY_RANGE (SUBNET, LOCALHOST, OFF) and ROS_STATIC_PEERS, which replaced the older ROS_LOCALHOST_ONLY; a second way two processes silently don't see each other.
+        lang: en
+      - id: middleware-vendors
+        title: Different ROS 2 middleware vendors
+        kind: read
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/About-Different-Middleware-Vendors.html
+        minutes: 8
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: Fast DDS is still the default in Lyrical; two processes on different RMWs are another quiet partition worth one line in the journal.
+        lang: en
+  - step: Publish faster than the subscriber consumes, with a history depth of one
+    material:
+      - id: executors
+        title: Executors
+        kind: read
+        tier: required
+        url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/About-Executors/About-Executors.html
+        minutes: 20
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical concept docs, Open Robotics.
+        why: Incoming messages wait in the middleware, not in rclpy/rclcpp, until a callback takes them; with KEEP_LAST depth 1 a slow callback means every older sample is overwritten without a trace.
+        lang: en
+      - id: topic-statistics
+        title: Enabling topic statistics (C++)
+        kind: do
+        tier: useful
+        url: https://docs.ros.org/en/lyrical/Developer-Tools/Introspection-and-analysis/Topic-Statistics-Tutorial/Topic-Statistics-Tutorial.html
+        minutes: 25
+        standing: canonical
+        standing_note: Official ROS 2 Lyrical tutorials, Open Robotics.
+        why: Message age and period measured on the subscriber side; turns "some messages are missing" into a number for the journal entry.
+        lang: en
+  - step: Write two journal entries
+    material:
+      - id: sre-postmortem-culture
+        title: 'Site Reliability Engineering, ch. 15: Postmortem Culture: Learning from Failure'
+        kind: read
+        tier: useful
+        url: https://sre.google/sre-book/postmortem-culture/
+        minutes: 20
+        standing: canonical
+        standing_note: Google SRE book (O'Reilly, free online); the standard reference on blameless postmortems.
+        why: What a useful failure write-up contains (trigger, impact, detection, root cause, what would have caught it); a template the journal entries can borrow.
+        lang: en

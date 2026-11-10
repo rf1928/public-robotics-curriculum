@@ -1,0 +1,71 @@
+material:
+  - id: about-ros
+    title: About ROS (ROS 2 Lyrical docs)
+    kind: read
+    tier: required
+    url: https://docs.ros.org/en/lyrical/About-ROS.html
+    minutes: 6
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical documentation, Open Robotics; the docs' own "about" page.
+    why: The orienting entry for the tool. It is the maintainers' map of what gets installed and what each part is for. The framework is the plumbing (nodes, topics, services and actions, parameters, client libraries). The tools build, introspect, record and visualise but add no robot behaviour. The capabilities (navigation, perception, motion planning) are separate packages. Gazebo is an integration beside ROS, not part of it, and a distribution is pinned to one Ubuntu LTS. That places ros2-core in the plumbing under every layer of the stack and separates what this week drills (framework and CLI) from what later weeks add (capabilities). Short and light on reasons; the PRA chapter supplies those.
+    lang: en
+  - id: installation-troubleshooting
+    title: Troubleshooting installation
+    kind: read
+    tier: recommended
+    url: https://docs.ros.org/en/lyrical/Get-Started/Installation/Installation-Troubleshooting.html
+    minutes: 10
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+    why: Includes the multicast check (`ros2 multicast send/receive`) and firewall issues that make discovery fail silently on a fresh machine.
+    lang: en
+  - id: multiple-rmw
+    title: Working with multiple ROS 2 middleware implementations
+    kind: read
+    tier: recommended
+    url: https://docs.ros.org/en/lyrical/Get-Started/Installation/RMW-Implementations/Working-with-multiple-RMW-implementations.html
+    minutes: 15
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+    why: RMW_IMPLEMENTATION and which RMWs interoperate; needed to diagnose cross-vendor and cross-machine communication.
+    lang: en
+  - id: install-jazzy-debs
+    title: Installing on Ubuntu (deb packages)
+    kind: do
+    tier: useful
+    url: https://docs.ros.org/en/lyrical/Get-Started/Installation/Ubuntu-Install-Debs.html
+    minutes: 20
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical installation docs, Open Robotics.
+    why: Done in week 1 on Ubuntu 26.04; kept as the reference for any reinstall. Not for the Jetson host, because JetPack 7.2 is Ubuntu 24.04, which Lyrical has no packages for, so the Jetson runs Lyrical in a container.
+    lang: en
+  - id: gazebo-ros-install
+    title: Installing Gazebo with ROS
+    kind: do
+    tier: useful
+    url: https://gazebosim.org/docs/jetty/ros_installation/
+    minutes: 15
+    standing: canonical
+    standing_note: Official Gazebo Jetty docs, Open Robotics.
+    why: The supported ROS/Gazebo pairing table (Lyrical goes with Jetty) and ros_gz packages; done in week 1, reference only.
+    lang: en
+  - id: ros2-param-cli
+    title: Using the ros2 param command-line tool
+    kind: read
+    tier: useful
+    url: https://docs.ros.org/en/lyrical/ROS-Framework/parameters/Working-with-parameters/Using-ros2-param.html
+    minutes: 8
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+    why: Reference for get/set/dump/load beyond the tutorial.
+    lang: en
+  - id: two-nodes-docker
+    title: Running 2 nodes in single or separate docker containers
+    kind: do
+    tier: interesting
+    url: https://docs.ros.org/en/lyrical/Developer-Tools/Build/Run-2-nodes-in-single-or-separate-docker-containers.html
+    minutes: 20
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical how-to guides, Open Robotics.
+    why: Containers add a network boundary; a cheap extra way to reproduce discovery failures on one machine. The same boundary appears on the Jetson, where Lyrical runs in a container.
+    lang: en
