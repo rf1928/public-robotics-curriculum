@@ -25,6 +25,20 @@ material:
     standing_note: Official Gazebo Jetty documentation, Open Robotics.
     why: The October record step starts from a Gazebo run, and a simulated clock exists in ROS only if ros_gz_bridge carries it; this is where the bridge config is explained. Overlaps the step entries `gz-launch-from-ros2` and `ros-gz-bridge-readme`; skip it if those were read.
     lang: en
+  - id: tf2-and-time
+    title: Using time (C++), tf2 tutorial (ROS 2 Lyrical docs)
+    kind: read
+    tier: recommended
+    url: https://docs.ros.org/en/lyrical/ROS-Framework/client-libraries/Working-with-Client-Libraries/Tf2/Learning-About-Tf2-And-Time-Cpp.html
+    minutes: 10
+    plan: when-needed
+    standing: canonical
+    standing_note: Official ROS 2 Lyrical tutorials, Open Robotics. Same URL as the break-it step's `tf2-and-time`.
+    why: |-
+      The transform half of quiz question 3. tf2 keeps a short history of every transform (10 seconds by default), and a lookup asks for the transform at a given time: time 0 means "the latest available", `now()` means the current time on the node's clock.
+      Asking for a time the buffer has no data for fails with "Lookup would require extrapolation into the future".
+      In a replay on wall time the bag's transforms carry their recorded stamps while `now()` is today, so lookups at `now()` fail or need a timeout; on simulated time both come from the same clock and line up. Read it before answering Q3; the code steps can be skimmed.
+    lang: en
   - id: cruise-roscon2018-determinism
     title: Nicolò Valigi (Cruise), "Lessons learned building a self-driving car on ROS", ROSCon 2018, slides 5–7 "Simulation and determinism"
     kind: read

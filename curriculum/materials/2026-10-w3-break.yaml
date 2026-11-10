@@ -115,5 +115,5 @@ steps:
         plan: when-needed
         standing: canonical
         standing_note: Official Matplotlib API reference.
-        why: The simulator plots with Matplotlib and only calls `plt.show()`. Have the LLM add `savefig` (SVG or PDF) with the gains in the filename, so the plot the criterion asks you to link is tied to its gains.
+        why: The simulator plots with Matplotlib and only calls `plt.show()`. Have the LLM add `savefig` (SVG or PDF) with the gains in the filename, so the plot the practical asks you to link is tied to its gains.
         lang: en

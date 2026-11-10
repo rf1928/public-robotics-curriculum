@@ -50,7 +50,7 @@ Every file starts with YAML front matter, so the curriculum can be read by hand 
 
 - **depth** says how far a concept should go: `describe` (name the parts), `explain` (the mechanism, in your own words) or `evaluate` (when it holds, when it doesn't, and what you'd choose).
 - **quiz** checks understanding. Answer it in writing before moving on.
-- **criterion** checks you can do it. It says what to write and what to link (a plot, a bag, a journal entry) to show the concept in your own work.
+- **criterion** (the *practical*, as the study notes call it) checks you can do it. It says what to write and what to link (a plot, a bag, a journal entry) to show the concept in your own work.
 - **materials** are tiered `required`, `recommended` or further reading. Many entries also carry a `plan`: `first` (read before you start), `when-needed` (open at a named step) or `further`. Materials exist so far for the month 1 concepts and activities.
 
 ### Working through a week

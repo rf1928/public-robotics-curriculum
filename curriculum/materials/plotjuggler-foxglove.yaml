@@ -11,7 +11,7 @@ material:
     why: |-
       The orienting entry: what these tools are for and what they replaced.
       Log visualisation sits beside the stack, not in it: it reads the same topics as every layer and shows them to a person. The post lists the ROS tools one window absorbed (RViz for 3D and TF, rqt_plot for time series, rqt_image_view, rqt_console, `ros2 topic echo`) and the workflow that came with it: drop a bag in, arrange panels, export the layout as JSON.
-      PlotJuggler covers the rqt_plot part with far more depth (thousands of series, transforms, XY plots). Foxglove covers the rest, live or from a file. That split is how the criterion divides the work.
+      PlotJuggler covers the rqt_plot part with far more depth (thousands of series, transforms, XY plots). Foxglove covers the rest, live or from a file. That split is how the practical divides the work.
     lang: en
   - id: plotjuggler-readme
     title: PlotJuggler README (install, ROS 2 plugins, tutorials)
@@ -44,7 +44,7 @@ material:
     plan: further
     standing: canonical
     standing_note: Official Foxglove documentation.
-    why: Opening a bag versus a live connection; the two modes the criterion names. It starts with "Create a free Foxglove account" - the app needs a sign-in since Foxglove 2.0 (see `foxglove-2-0-announcement`).
+    why: Opening a bag versus a live connection; the two modes the practical names. It starts with "Create a free Foxglove account" - the app needs a sign-in since Foxglove 2.0 (see `foxglove-2-0-announcement`).
     lang: en
   - id: foxglove-bridge-jazzy
     title: foxglove_bridge README (ROS 2 Lyrical package docs), "Motivation", install and configuration
@@ -56,7 +56,7 @@ material:
     standing: canonical
     standing_note: The package's own README as published on docs.ros.org for Lyrical (foxglove_bridge 3.6.0, `ros-lyrical-foxglove-bridge`), maintained by Foxglove.
     why: |-
-      The "views live topics from a remote robot" part of the criterion.
+      The "views live topics from a remote robot" part of the practical.
       "Motivation" states the problem: RViz needs a GUI on the robot or an identical ROS install with all custom messages on the laptop, and rosbridge chokes on high-rate or large messages. The bridge sends ROS 2 data over one WebSocket (port 8765), so the Jetson's topics reach the laptop without DDS discovery crossing the network. On the Jetson the bridge runs inside the Lyrical container, so publish port 8765 (or use host networking) or the laptop sees nothing.
       The parameter list (topic whitelist, buffer limits) is what keeps a point cloud from saturating a field Wi-Fi link.
     lang: en

@@ -37,7 +37,7 @@ material:
     minutes: 20
     standing: well-regarded
     standing_note: MIT and Oxford (Michael Benjamin, Henrik Schmidt, John Leonard, Paul Newman); MOOS-IvP is the open marine-autonomy stack taught in MIT 2.680 and run on many AUVs and USVs.
-    why: The criterion's "one kind of system that would not use it", from marine autonomy. A marine-autonomy stack with its own publish-subscribe middleware (a star around the MOOSDB, not peer-to-peer DDS). Its backseat-driver split puts autonomy on a payload computer and leaves the vehicle maker's controller in charge of control. It is also the cleanest picture of where the autonomy stack stops and the vehicle starts (see autonomy-stack). The PDF is 40 MB and dates from 2013; only section 2 is needed.
+    why: The "one kind of system that would not use it" in the practical, from marine autonomy. A marine-autonomy stack with its own publish-subscribe middleware (a star around the MOOSDB, not peer-to-peer DDS). Its backseat-driver split puts autonomy on a payload computer and leaves the vehicle maker's controller in charge of control. It is also the cleanest picture of where the autonomy stack stops and the vehicle starts (see autonomy-stack). The PDF is 40 MB and dates from 2013; only section 2 is needed.
     lang: en
   - id: ros2-distributions
     title: Distributions (ROS 2 Lyrical docs)

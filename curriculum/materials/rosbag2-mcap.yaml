@@ -24,7 +24,7 @@ material:
     standing: canonical
     standing_note: The rosbag2 maintainers' source for `ros2 bag play`; its argparse help is exactly what `ros2 bag play --help` prints on Lyrical.
     why: |-
-      The one place the replay half of the criterion is written down (lines ~100-115).
+      The one place the replay half of the practical is written down (lines ~100-115).
       - `--clock [Hz]` makes the player the ROS time source, publishing `/clock` at 40 Hz by default, and it drops any `/clock` recorded in the bag. So a bag recorded from Gazebo with `/clock` does not end up with two clock publishers.
       - `--clock-topics` and `--clock-topics-all` instead update `/clock` right before each replayed message, which removes the up-to-25 ms jitter between a message and the clock at 40 Hz.
       Every node that should follow the replayed time also needs `use_sim_time:=true`; the player only publishes the clock.

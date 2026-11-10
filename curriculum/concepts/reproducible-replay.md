@@ -6,7 +6,7 @@ depth: evaluate
 week: 2026-10-w3
 quiz: |
   1. What can open-loop log replay tell you about a run, and what can it not? Why does testing planning and control need closed-loop re-simulation instead?
-  2. What is the difference between simulated time and wall time in ROS 2? During a replay, which clock should the nodes run on, and where does that clock come from?
+  2. In a Gazebo and ROS 2 setup, where does the simulated clock the nodes run on come from, and what do the nodes' timestamps follow if the bridge does not carry it? Why does a replay need that controlled clock instead of running as fast as the hardware allows?
   3. What goes wrong in a replay that runs on wall time: what happens to timestamps and to transform lookups, and why?
 criterion: |
   **Checks:** a replay you can trust, and why it depends on simulated time.
